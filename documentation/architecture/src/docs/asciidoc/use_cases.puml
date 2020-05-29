@@ -1,0 +1,37 @@
+@startuml
+
+left to right direction
+
+note top of application
+  the application has to support multiple users,
+  each user should just see her own data
+end note
+
+rectangle application {
+  (Report Observation) as report
+  (Load Single Observation) as load
+  (Mark Observation As Invalid) as invalidate
+  (Load Observations by Type and Timeframe) as loadMultiple
+  (Summary By Type For Timeframe) as summary
+}
+
+actor User
+
+User --> report
+User --> load
+User --> loadMultiple
+User --> invalidate
+User --> summary
+
+actor Follower
+
+load <-- Follower
+loadMultiple <-- Follower
+summary <-- Follower
+
+note right of Follower
+  The follower is only allowed to retrieved
+  data for a specified user
+end note
+
+@enduml

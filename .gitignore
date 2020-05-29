@@ -1,7 +1,12 @@
-/.gradle
-/.idea
-/out
-/build
+.gradle/
+.idea/
+out/
+build/
 *.iml
 *.ipr
 *.iws
+/src/docs/article/*.pdf
+/src/docs/article/*.html
+VERSION
+node_modules/
+package-lock.json

@@ -1,0 +1,7 @@
+The outer hexagon containing Secondary or Driven Adapters (Out)
+
+The Driven Adapters implement a Port to fulfill the needs of the Application Core.
+
+TODO
+
+* CqlSession is not closeable right now

@@ -1,0 +1,29 @@
+= Domainmodel of the Kotlin-Cassandra-Demo
+
+:imagesdir: ../resources/
+:plantUmlDir:
+
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+
+The Datamodel of KCD is rather simple and reflects the following Use-Cases.
+
+plantuml::{plantUmlDir}use_cases.puml[format=svg,alt="Use Cases"]
+
+== Observation
+
+An Observation is a concrete measurement and the root aggregate in this bounded-context.
+
+An Observation contains some metadata in in most cases a simple value (element), some observations groups multiple elements together.
+
+Parts of the metadata is necessary for the system to be able to generate reportings, other metadata is specific for the concrete observation type and will therefore stored in a map (extension).
+
+To be able to handle values of different data-types, the Element is a generic structure which is then extended using a concrete data-type.
+
+
+

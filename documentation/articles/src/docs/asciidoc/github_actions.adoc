@@ -1,0 +1,39 @@
+= Continuous Integration mit github actions
+
+:imagesdir: ../resources/
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+
+1999 hat Kent Beck in seinem Extreme Programming Explained, Embrace Change den Begriff Continuous Integration geprägt.
+Später hat Martin Fowler diesen Begriff in seinem Bliki ausführlich erklärt und definiert.
+Eine der Grundvoraussetzung der Continuous Integration ist die Automatisierung des Prozesses.
+
+Bereits in 2001 wurde eines der ersten Continuous Integration Werkzeuge, link:http://cruisecontrol.sourceforge.net/index.html[CruiseControl], von Thoughtworks, dem Arbeitgeber von Martin Fowler, veröffentlicht.
+Damit ließen sich die Integrationen und insbesondere die Nightly Builds automatisieren und bei Änderungen im Source Code Repository bzw.
+Zeitgesteuert starten.
+
+Mittlerweile gehört die Continuous Integration und die Weiterentwicklung Continuous Deployment zu den Standardmäßig verwendeten Prozesses in der Software Entwicklung.
+Entwicklungsumgebungen wie Gitlab und GitHub integrieren nun Werkzeuge, um diesen Prozess innerhalb der Umgebung abzubilden.
+Seit Ende 2019 unterstütz github mit den GitHub Actions diesen Prozess.
+
+Im folgenden wird ein Beispielhafter Prozess (eine sogenannte Pipeline/Workflow) abgebildet.
+
+Um github Actions in einem Projekt zu aktiviern, muss eine Action-Datei (.yml) im Verzeichnis .github/workflows abgelegt werden.
+Der gezeigte Worfklow umfasst die folgednen Schritte:
+
+
+* Bau der Applikation
+* Tests (Unit und ggf.
+Integration)
+* Statische SourceCode analyse mit SonarQube
+* Sicherheitscheck der Applikation mit OWASP
+* Generierung eines Releases udn Publizierung des Releases auf github und im github maven Repository
+* Publizierung der Projektspezifischen Dokumentation auf github-pages
+
+
+

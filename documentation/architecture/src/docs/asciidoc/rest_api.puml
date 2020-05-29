@@ -1,0 +1,48 @@
+@startuml
+
+skinparam componentStyle uml2
+
+Element -- Quantity
+Component --> "1..n" Element
+Observation -- Component
+
+RestObservation -- Observation
+
+class Quantity {
+  unit: String
+  amount: Number
+}
+
+class Element {
+  type: String
+  comment: String?
+  quantity: Quantity
+  device: String
+  extension: String
+}
+
+class Component {
+  type: String
+  comment: String?
+  elements: Collection<Element>
+}
+
+class Observation {
+  id: UUID
+  dateOfObservation: ZonedDateTime
+  type: String
+  component: Component
+}
+
+class RestObservation {
+  value: Observation
+}
+
+class Failure {
+  code: Int
+  message: String
+  trace: String
+}
+
+
+@enduml

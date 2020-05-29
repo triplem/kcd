@@ -1,0 +1,41 @@
+@startuml
+
+skinparam componentStyle uml2
+
+EmbeddedAudit -- Observation
+Element -- Observation
+
+class EmbeddedAudit {
+  user : String
+  createdAt : Instant
+  modifiedAt : Instant
+}
+
+class Observation {
+  id : UUID
+  date : Instant
+  audit : EmbeddedAudit
+  valid : Boolean
+  element : Element
+}
+
+interface Element<? extends Any> {
+  type : String
+  subType : String
+  unit : String
+  comment : String
+  value : ?
+  device : String
+  extension : Map<String, Any>
+}
+
+class IntElement<Int> implements Element
+IntElement : value : Int
+
+class DoubleElement<Double> implements Element
+DoubleElement : value : Double
+
+class Component<Set<Element>> implements Element
+Component : value : Set<Element>
+
+@enduml

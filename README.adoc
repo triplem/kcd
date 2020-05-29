@@ -1,6 +1,30 @@
 = Kotlin/Cassandra Demo
 
+:uri-build-status: https://github.com/triplem/kcd/workflows/CI%20Build/badge.svg
+:img-quality-status: https://sonarcloud.io/api/project_badges/measure?project=kcd&metric=alert_status
+:quality-link: https://sonarcloud.io/dashboard?id=kcd
+
+ifdef::status[]
+image:{img-build-status}[Build Status Badge,link={uri-build-status}]
+image:{img-quality-status}[Sonarqube Badge,link={quality-link}]
+endif::[]
+
 This is a proof-of-concept and/or demo on the usage of http://cassandra.apache.org/[Apache Cassandra] using https://kotlinlang.org/[kotlin]
 and the https://ktor.io/[ktor].
 
 More documentation can be found in src/docs.
+
+Some hints on creating a new version:
+https://www.asyncapi.com/blog/automated-releases-part-two/
+
+https://semantic-release.gitbook.io/semantic-release/
+
+sources of wisdom:
+https://github.com/appmattus/kotlinfixture/blob/main/owaspDependencyCheck.gradle.kts
+https://github.com/dustinsand/hex-arch-kotlin-spring-boot/tree/master/voter-application-core/src/main/java/com/hexarchbootdemo
+https://www.oreilly.com/content/cassandra-data-modeling/
+https://docs.gradle.org/current/samples/sample_convention_plugins.html
+
+Tools used:
+https://k3d.io/
+https://github.com/willowtreeapps/assertk

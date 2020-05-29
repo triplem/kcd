@@ -1,0 +1,75 @@
+openapi: 3.0.3
+info:
+  title: KCD
+  version: '1.0'
+  x-logo:
+    url: ''
+  license:
+    name: MIT License
+    url: 'https://opensource.org/licenses/MIT'
+paths:
+  /observation/{observationId}:
+    get:
+      tags: [ ]
+      operationId: GetObservation
+      responses:
+        - 200:
+            description: OK
+            content:
+              application/json:
+                schema:
+                  $ref: '#/definitions/observation'
+      parameters:
+        - name: observationId
+          in: path
+          style: simple
+          required: true
+          schema:
+            type: string
+          example: 52d292ce-0b7e-4882-905c-de8c75791b8c
+  /observation:
+    post:
+      tags: [ ]
+      requestBody:
+        description: ''
+        required: false
+        content:
+          application/json:
+            encoding: ''
+
+components:
+  securitySchemes:
+    JWTAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: |-
+        Example:
+        > Authorization: Bearer <token>
+  schemas:
+    observation:
+      type: object
+      description: "\t"
+      required:
+        - uuid
+        - type
+      properties: |
+        uuid:
+          type: string
+        type:
+          type: string
+        date:
+          type: string
+          format: date-time
+        comment
+          type: string
+  headers: { }
+  responses: { }
+  parameters: { }
+tags: [ ]
+servers:
+  - url: 'http://localhost:8080'
+    description: ''
+    variables: { }
+security:
+  - JWTAuth: [ ]

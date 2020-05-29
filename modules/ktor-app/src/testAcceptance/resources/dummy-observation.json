@@ -1,0 +1,25 @@
+{
+  "value": {
+    "dateOfObservation": "2021-03-23T22:59:53.798+01:00",
+    "type": "type",
+    "component": {
+      "type": "type",
+      "comment": "comment",
+      "elements": [
+        {
+          "type": "type",
+          "comment": "comment",
+          "quantity": {
+            "unit": "unit",
+            "amount": {
+              "type": "Int",
+              "value": 100
+            }
+          },
+          "device": "device",
+          "extension": "extension"
+        }
+      ]
+    }
+  }
+}

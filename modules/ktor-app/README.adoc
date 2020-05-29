@@ -1,0 +1,3 @@
+The outer hexagon containing Primary or Driving Adapters (In)
+
+The Driving Adapters tell the Application Core what to do.

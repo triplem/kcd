@@ -1,0 +1,21 @@
+name: KCD Acceptance Tests
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      cassandra:
+        image: cassandra
+        ports:
+          - 9042:9042
+        options: --health-cmd "cqlsh --debug" --health-interval 5s --health-retries 10
+      kcd:
+        image: kcd
+        ports:
+          - 8080:8080
+    steps:
+      - run: docker ps
+      - run: docker exec ${{ job.services.cassandra.id }} cqlsh --debug localhost 9042 --execute="use kcd;"

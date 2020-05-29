@@ -1,0 +1,14 @@
+comments:
+  AbsentOrWrongFileLicense:
+    active: false
+style:
+  FunctionOnlyReturningConstant:
+    active: false
+  WildcardImport:
+    active: true
+    excludeImports:
+      - java.util.*
+      - kotlinx.android.synthetic.*
+      - io.ktor.*
+  NewLineAtEndOfFile:
+    active: true

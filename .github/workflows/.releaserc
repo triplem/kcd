@@ -1,0 +1,18 @@
+{
+    "branches": ["main"],
+    "plugins": [
+        "@semantic-release/commit-analyzer",
+        "@semantic-release/release-notes-generator",
+        ["@semantic-release/github", {
+            "assets": [
+                {"path": "../../build/distributions/kcd.tar", "label": "Assembly - Tar ${nextRelease.version}"},
+                {"path": "../../build/distributions/kcd.zip", "label": "Assembly - Zip ${nextRelease.version}"},
+                {"path": "../../build/libs/kcd-*.jar", "label": "Release Jar ${nextRelease.version}"},
+                {"path": "../../build/libs/kcd-*-sources.jar", "label": "Release SourceJar ${nextRelease.version}"}
+            ]
+        }],
+        ["@semantic-release/exec", {
+          "prepareCmd" : "./release-files.sh ${nextRelease.version}"
+        }]
+    ]
+}

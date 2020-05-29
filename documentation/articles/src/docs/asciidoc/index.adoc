@@ -1,0 +1,280 @@
+= Kotlin/Cassandra Demo
+
+:revnumber: {revnumber}
+:revdate: {revdate}
+
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+
+This is a demo on the usage of http://cassandra.apache.org/[Apache Cassandra] using https://kotlinlang.org/[kotlin]
+and https://ktor.io/[ktor].
+Furthermore the Kotlin DSL of gradle is used to provide a kotlin only experience.
+Additonal dependencies inlcude https://kodein.org/Kodein-DI/?6.3/ktor[kodein] and
+https://github.com/MicroUtils/kotlin-logging[kotlin-logging].
+
+The documentation of this project is written using Asciidoc (you are currently looking at the documentation ;-)).
+
+The onion-architecture, also known as hexagonal architecture or ports-and-adapter, is used.
+The project
+https://hackernoon.com/hexagonal-architecture-with-kotlin-ktor-and-guice-f1b68fbdf2d9[Hexagonal Architecture with Kotlin, Ktor and Guice] has done something similar but with a slightly different toolset.
+
+== Domain
+
+As an example, we are using health related sensor data as the domain.
+
+There is one further requirement for the data and its storeage.
+Since the application has to be usable by multiple users at once, and no new keyspace should be used for each user, the user/user-id should be contained in each table row.
+
+Problem could be, that if the application is running for a longer timeframe, the data on one partition could grow rather large.
+The base assumption is, that each 5 minutes a new event of the same type is reported to this application per user.
+This means 12 values each hour, 288 each day, 8640 (approx.) per month, 103680 values per year.
+According to http://adamhutson.com/sizing-cassandra-data/[Adam Hutson], there seems to be a limit of roughly 2 billion (does this mean American billions?), meaning, that we could store around 19 years of data per partition.
+
+In an early stage of this project, we thought it to be a good idea to receive concrete objects of sensor values.
+Since different sensors can send different sensor data (eg. blood sugar, which is a one type value, and blood pressure, which is a two point value), this made the design very complex and I decided to just receive a JsonElemnt/Map instead of concrete objects.
+There were still some learnings especially for the Serialization of those objects (Inheritance), and you can find this old and not used model now in the 'deprecated' package, to be able to still see how the serialization is configured and done in there.
+
+Some observations (sensor readings and reportings) are "re-calculated", so that those are stored only in a specific unit in our database.
+Eg. blood sugar readings can be reported in mmol/l as well as in mg/dl.
+Those readings are checked and only stored in mg/dl in our database, to make values comparable.
+This means that we do need to access values and cannot use JsonElement in the domain layer.
+The recalculated value in the DB is then also reported back to the client during a GET on this value.
+This means, that the client has to recalculate the value again, if required by the user.
+
+Since a map can just be stored in cassandra if the key and value are of a known object type, it was decided to store a Json-String.
+This means, that we are receiving a JsonElement in the Rest-Inteface, transforming it to a Map in the Domain Layer and transforming it to a JsonElement again in the Persistence Layer.
+Rather awkward, but a nice showcase, why different data models in all layers can be useful.
+
+=== Conceptual Model
+
+The domain aggregate `entity`, which represents the basic model of this application, contains the following fields:
+
+* user - the user
+* type - what kind of event is this (eg.
+BS measurement, CGM value, carbs, ...)
+* date - the exact date of the event, note that this has to contain the timezone, otherwise UTC is assumed
+* value - the value of the observation, this could be multiple real values (eg. for blood pressure, you would have systolic and diastolic, meaning two values whereas for blood sugar there is just one value)
+
+=== Queries
+
+* all types for a single user
+* all events for a single user in a certain timeframe
+* all events for a single user by type and timeframe
+* specific event (for a single user)
+
+=== Physical
+
+For Cassandra it seems to be good practice, that the tables are modeled based on the necessary queries.
+According to
+http://adamhutson.com/cassandra-logical-data-modeling/[Adam Hutson], there are two main things to check the model.
+
+. Spread Data Evenly Around the Cluster
+. Minimize the Number of Partitions Read
+
+==== Query: by user, type and time range
+
+[source,cql]
+----
+CREATE TABLE observation (
+    id uuid,
+    user text,
+    type text, // an enum really?
+    date timestamp,
+    createdAt timestamp,
+    modifiedAt timestamp,
+    unit text,
+    data text,
+    PRIMARY KEY(id, user, type, date)
+);
+----
+
+Let's match the above table against the checks:
+
+. Spread Data Evenly Around the Cluster
++
+Each user, type and timeuuid combination gets an own partition, so yes.
+
+. Minimize the Number of Partitions Read
++
+We are basically querying one partition.
+
+==== Query: observations by date as well as by type
+
+To avoid the write of the denormalized data of the above table multiple times, we are using a materialized view (https://www.datastax.com/blog/2016/05/materialized-view-performance-cassandra-3x[Datastax - Material Views]).
+There are still some optimizations possible (see https://issues.apache.org/jira/browse/CASSANDRA-9779[Append-only Optimization]) and we do hope that those optimizations are hitting upstream cassandra soon.
+
+[source,cql]
+----
+CREATE MATERIALIZED VIEW observation_by_date AS
+    SELECT user, date, type, id, unit, data, createdAt, modifiedAt FROM observation
+    WHERE user IS NOT NULL AND date IS NOT NULL AND type IS NOT NULL AND id IS NOT NULL
+    PRIMARY KEY (user, date, type, id);
+
+CREATE MATERIALIZED VIEW observation_by_type AS
+    SELECT user, type, date, id, unit, data, createdAt, modifiedAt FROM observation
+    WHERE user IS NOT NULL AND date IS NOT NULL AND type IS NOT NULL AND id IS NOT NULL
+    PRIMARY KEY (user, type, date, id);
+----
+
+Let's match the above table against the checks:
+
+. Spread Data Evenly Around the Cluster
++
+Each user gets an own partition, so yes.
+
+. Minimize the Number of Partitions Read
++
+Each user is in one partition, so yes.
+
+==== Query types by user
+
+Unfortunately this table is not doable via materialized views as well, due to the fact that there is no reference of the entry in the original table.
+Therefor we do write those entries "manually".
+This has the advantage that we could even pre-fill and/or filter values which can be written in this table as well.
+
+[source,cql]
+----
+CREATE TABLE user_types (
+    user text,
+    type text,
+    PRIMARY KEY (user, type)
+);
+----
+
+Let's match the above table against the checks:
+
+. Spread Data Evenly Around the Cluster
++
+Each user gets an own partition, so yes.
+
+. Minimize the Number of Partitions Read
++
+Each user is in one partition, so yes.
+
+== Tests
+
+For integration tests, we do use https://nosan.github.io/embedded-cassandra/[embedded-cassandra], which provides some nice utilities to write integration tests using an "embedded" cassandra.
+
+In the future, we do plan to provide some examples using other methods as well, like eg:
+
+* https://github.com/jsevellec/cassandra-unit/wiki[Cassandra-Unit]
+* https://www.testcontainers.org/modules/databases/cassandra/[Cassandra Testcontainer]
+* https://github.com/apache/cassandra/blob/2209115972f7994ca0cb8fbd0dee1299dea06536/src/java/org/apache/cassandra/service/EmbeddedCassandraService.java[Embedded Cassandra Service]
+
+== Authentication
+
+Since this application is multi-user capable, we do need to make sure, that the user is authenticated.
+This is done using a JWT.
+
+During development phase, this can be mocked by using a development-token generated at
+https://jwt.io/#debugger-io[jwt.io].
+
+[source,json]
+----
+Header:
+{
+  "alg": "HS256",
+  "typ": "JWT"
+}
+
+Payload:
+{
+  "iss": "https://accounts.example.com",
+  "aud": "applicationId",
+  "exp": 1353604926,
+  "iat": 1353601026,
+  "sub": "userId",
+  "email": "user@example.com"
+}
+
+Verify Signature:
+HMACSHA256(
+  base64UrlEncode(header) + "." +
+  base64UrlEncode(payload),
+  your-256-bit-secret
+)
+----
+
+== Other Decisions
+
+* if the keyspace (name is configurable) does not exists (not already creaated), this app will fail to start correctly
+* jwt will be used as an authorization mechanism, all required parameters should be configurable
+* suspend functions and async cassandra api are used
+* kodein is used as a dependency injection framework
+
+== API Model generation
+
+Say, you would like to generate a client to this service, you could use the following code snipped in your build.gradle.kts.
+
+[source,kotlin]
+----
+plugins {
+    id("org.openapi.generator") version "4.3.0"
+}
+
+openApiGenerate {
+  generatorName.set("kotlin-server")
+  inputSpec.set("$rootDir/kcd_v1.yaml")
+  outputDir.set("$buildDir/generated")
+
+  apiPackage.set("org.openapi.example.api")
+  invokerPackage.set("org.openapi.example.invoker")
+  modelPackage.set("org.openapi.example.model")
+
+  configOptions.set(mapOf(
+      "dateLibrary" to "java8"
+  ))
+}
+
+tasks {
+  val openApiGenerate by getting
+
+  val compileJava by getting {
+    dependsOn(openApiGenerate)
+  }
+}
+----
+
+== Installation
+
+We do recommend using Containers to run this demo.
+
+Please note, that we do not recommend to run an cassandra cluster in containers in a production environment.
+
+docker run --name kcd-casssandra --network some-network -p 9042:9042 -d cassandra:latest
+
+http://localhost:8080/readyz
+
+* Following https://robertbrem.github.io/Microservices_with_Kubernetes/17_Event_Sourcing_with_Cassandra/01_Setup_Cassandra/
+to setup your cluster
+
+
+* Dummy Token:
+
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJqd3QtYXVkaWVuY2UiLCJuYW1lIjoiSm9obiBEb2UiLCJpYXQiOjE1MTYyMzkwMjJ9.pWyDsdCehIkDfUC9A6SHX9O_vIuoYhW29dgFxuE16cE
+
+
+https://medium.com/@andreclassen1337/goodbye-runtimetypeadapterfactory-polymorphic-serialization-using-kotlinx-serialization-46a8cec36fdc
+
+Dates are always stored, regardless of their "initial" (incoming) timezone, in UTC.
+This is done during the de-serialization in the Rest-API.
+
+
+=== BUild
+
+until https://github.com/ajoberstar/reckon/issues/134 is resolved, we do use rather old version https://github.com/tschulte/gradle-semantic-release-plugin
+
+
+https://herbertograca.com/2017/11/16/explicit-architecture-01-ddd-hexagonal-onion-clean-cqrs-how-i-put-it-all-together/
+https://github.com/dustinsand/hex-arch-kotlin-spring-boot/blob/master/settings.gradle.kts
+
+
+https://kordamp.org/kordamp-gradle-plugins/
+
+
+{includedir}/semantic-versioning.adoc
