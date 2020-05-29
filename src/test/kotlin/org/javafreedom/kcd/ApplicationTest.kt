@@ -14,7 +14,7 @@ import kotlinx.serialization.UseSerializers
 import kotlinx.serialization.json.*
 import mu.KotlinLogging
 import org.javafreedom.kcd.adapters.rest.Observation
-import org.javafreedom.kcd.adapters.rest.RequestDataPoint
+import org.javafreedom.kcd.adapters.rest.RequestObservation
 import org.javafreedom.kcd.common.ZonedDateTimeSerializer
 import java.time.ZoneId
 import java.time.ZonedDateTime
@@ -57,8 +57,8 @@ class ApplicationTest {
                     null, "bloodglucose", "mmol/l", ZonedDateTime.now(),
                     bs
                 )
-                val test1 = RequestDataPoint(bsValue)
-                logger.debug("bs: {}", json.stringify(RequestDataPoint.serializer(), test1))
+                val test1 = RequestObservation(bsValue)
+                logger.debug("bs: {}", json.stringify(RequestObservation.serializer(), test1))
 
 //https://stackoverflow.com/questions/55417112/kotlinx-serializer-create-a-quick-json-to-send
                 val element = test1.value.data as JsonObject
@@ -104,15 +104,15 @@ class ApplicationTest {
                     null, "bloodpressure", "mmHg", ZonedDateTime.now(),
                     bp
                 )
-                val test = RequestDataPoint(bpValue)
-                logger.debug("bp: {}", json.stringify(RequestDataPoint.serializer(), test))
+                val test = RequestObservation(bpValue)
+                logger.debug("bp: {}", json.stringify(RequestObservation.serializer(), test))
 
                 val element1 = test.value.data as JsonObject
                 val map1 = element1.toPrimitiveMap()
 
                 logger.warn { "map1: $map1" }
 
-                setBody(json.stringify(RequestDataPoint.serializer(), test))
+                setBody(json.stringify(RequestObservation.serializer(), test))
             }
         }
     }

@@ -13,7 +13,7 @@ data class Observation(val id: UUID?, val type: String, val unit: String, val da
                        val data: JsonElement)
 
 @Serializable
-data class RequestDataPoint(val value: Observation)
+data class RequestObservation(val value: Observation)
 
 @Serializable
 data class Failure(val message: String)
