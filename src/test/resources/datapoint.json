@@ -1,0 +1,25 @@
+{
+  "data": [
+    {
+      "type": "bloodpressure",
+      "location": "right arm",
+      "unit": "mmHg",
+      "value": [
+        {
+          "sub-type": "systolic",
+          "value": 70
+        },
+        {
+          "sub-type": "diastolic",
+          "value": 150
+        }
+      ]
+    },
+    {
+      "type": "bloodsugar",
+      "location": "finger",
+      "unit": "mg/dl",
+      "value": 121
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+= Kotlin/Cassandra Demo
+
+This is a proof-of-concept and/or demo on the usage of http://cassandra.apache.org/[Apache Cassandra] using https://kotlinlang.org/[kotlin]
+and the https://ktor.io/[ktor].
+
+More documentation can be found in src/docs.
