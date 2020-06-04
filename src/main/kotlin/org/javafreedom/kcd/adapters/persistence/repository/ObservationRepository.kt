@@ -6,7 +6,11 @@ import com.datastax.oss.driver.api.core.cql.BoundStatementBuilder
 import com.datastax.oss.driver.api.core.cql.Row
 import kotlinx.coroutines.future.await
 import mu.KotlinLogging
-import org.javafreedom.kcd.adapters.persistence.*
+import org.javafreedom.kcd.adapters.persistence.Observation
+import org.javafreedom.kcd.adapters.persistence.ObservationList
+import org.javafreedom.kcd.adapters.persistence.getInstantNonEmpty
+import org.javafreedom.kcd.adapters.persistence.getStringNonEmpty
+import org.javafreedom.kcd.adapters.persistence.getUuidNonEmpty
 import java.nio.ByteBuffer
 import java.time.Instant
 import java.util.*

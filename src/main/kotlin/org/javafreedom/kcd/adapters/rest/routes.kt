@@ -4,14 +4,17 @@ package org.javafreedom.kcd.adapters.rest
 import io.ktor.application.Application
 import io.ktor.application.call
 import io.ktor.auth.authentication
-import io.ktor.locations.*
+import io.ktor.locations.KtorExperimentalLocationsAPI
+import io.ktor.locations.Location
+import io.ktor.locations.get
+import io.ktor.locations.post
 import io.ktor.request.receive
 import io.ktor.response.respondText
 import io.ktor.routing.Route
 import io.ktor.routing.routing
 import mu.KotlinLogging
 import org.javafreedom.kcd.adapters.persistence.mapToPersistence
-import java.util.*
+import java.util.UUID
 
 private val logger = KotlinLogging.logger {}
 

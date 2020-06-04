@@ -4,7 +4,12 @@ package org.javafreedom.kcd.adapters.rest
 import com.datastax.oss.driver.api.core.CqlSession
 import io.ktor.application.Application
 import io.ktor.application.install
-import io.ktor.features.*
+import io.ktor.features.CallId
+import io.ktor.features.CallLogging
+import io.ktor.features.ConditionalHeaders
+import io.ktor.features.ContentNegotiation
+import io.ktor.features.DefaultHeaders
+import io.ktor.features.callIdMdc
 import io.ktor.http.HttpHeaders
 import io.ktor.locations.Locations
 import io.ktor.serialization.json
@@ -15,7 +20,7 @@ import org.javafreedom.kcd.adapters.persistence.keyspaceExists
 import org.javafreedom.kcd.common.ZonedDateTimeSerializer
 import org.kodein.di.generic.instance
 import org.kodein.di.ktor.kodein
-import java.util.*
+import java.util.UUID
 
 fun Application.restModule() {
 
