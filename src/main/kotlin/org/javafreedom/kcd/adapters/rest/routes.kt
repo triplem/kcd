@@ -15,6 +15,7 @@ import java.util.*
 
 private val logger = KotlinLogging.logger {}
 
+@SuppressWarnings("detekt:EmptyDefaultConstructor")
 @Location("/")
 class Index()
 
@@ -26,6 +27,7 @@ fun Route.index() {
 
 }
 
+@SuppressWarnings("detekt:EmptyDefaultConstructor")
 @Location("/observation")
 class ObservationRoute()
 
