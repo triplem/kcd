@@ -42,10 +42,10 @@ application {
 
 docker {
     javaApplication {
-        baseImage.set("openjdk:11-jre-alpine")
-        maintainer.set("Markus M. May 'mmay@somewhere.com'")
-        jvmArgs.set(listOf("-server", "-XX:+UnlockExperimentalVMOptions", "-XX:+UseCGroupMemoryLimitForHeap",
-            "-XX:InitialRAMFraction=2", "-XX:MinRAMFraction=2", "-XX:MaxRAMFraction=2", "-XX:+UseG1GC",
+        baseImage.set("openjdk:11-jdk-slim")
+        maintainer.set("KCD-Team 'kcd@somewhere.com'")
+        jvmArgs.set(listOf("-server", "-XX:+UnlockExperimentalVMOptions", "-XX:InitialRAMFraction=2",
+            "-XX:MinRAMFraction=2", "-XX:MaxRAMFraction=2", "-XX:+UseG1GC",
             "-XX:MaxGCPauseMillis=100", "-XX:+UseStringDeduplication"))
         ports.set(listOf(8080))
         mainClassName.set(project.application.mainClassName)
@@ -74,14 +74,13 @@ sonarqube {
 }
 
 detekt {
-    toolVersion = "1.8.0"                                 // Version of the Detekt CLI that will be used. When unspecified the latest detekt version found will be used. Override to stay on the same version.
-    input = files(                                        // The directories where detekt looks for source files. Defaults to `files("src/main/java", "src/main/kotlin")`.
+    toolVersion = "1.8.0"
+    input = files(
         "src/main/kotlin"
     )
-    parallel = false                                      // Builds the AST in parallel. Rules are always executed in parallel. Can lead to speedups in larger projects. `false` by default.
-    //config = files("detekt-config.yml")                  // Define the detekt configuration(s) you want to use. Defaults to the default detekt configuration.
-    buildUponDefaultConfig = false                        // Interpret config files as updates to the default config. `false` by default.
-    ignoreFailures = true                                // If set to `true` the build does not fail when the maxIssues count was reached. Defaults to `false`.
+    parallel = false
+    buildUponDefaultConfig = false
+    ignoreFailures = true
 }
 
 tasks {
