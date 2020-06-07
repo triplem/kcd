@@ -1,12 +1,16 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.asciidoctor.gradle.AsciidoctorTask
 import org.sonarqube.gradle.SonarQubeTask
-import io.gitlab.arturbosch.detekt.extensions.DetektExtension
+import team.yi.gradle.plugin.FileSet
 
+val project_name: String by project
 val logback_version: String by project
 val datastax_version: String by project
 val kodein_version: String by project
 val junit_version: String by project
+val github_url: String by project
+val github_org: String by project
+
 
 /**
  * Builds the dependency notation for the named Ktor [module] at the given [version].
@@ -27,10 +31,10 @@ plugins {
     id("org.sonarqube") version "2.8"
     jacoco
     id("io.gitlab.arturbosch.detekt") version "1.8.0"
+    id("team.yi.semantic-gitlog") version "0.5.3"
 }
 
 group = "org.javafreedom.kcd"
-version = "0.0.1"
 
 tasks.withType<KotlinCompile>().configureEach {
     kotlinOptions.jvmTarget = "1.8"
@@ -56,10 +60,9 @@ sonarqube {
     properties {
         // See https://docs.sonarqube.org/display/SCAN/Analyzing+with+SonarQube+Scanner+for+Gradle#AnalyzingwithSonarQubeScannerforGradle-Configureanalysisproperties
         property("sonar.sourceEncoding", "UTF-8")
-        val projectName = "kcd"
-        property("sonar.projectName", projectName)
-        property("sonar.projectKey", System.getenv()["SONAR_PROJECT_KEY"] ?: projectName)
-        property("sonar.organization", System.getenv()["SONAR_ORGANIZATION"] ?: "triplem")
+        property("sonar.projectName", "$project_name")
+        property("sonar.projectKey", System.getenv()["SONAR_PROJECT_KEY"] ?: "$project_name")
+        property("sonar.organization", System.getenv()["SONAR_ORGANIZATION"] ?: "$github_org")
         property("sonar.projectVersion", project.version.toString())
         property("sonar.host.url", System.getenv()["SONAR_HOST_URL"] ?: "https://sonarcloud.io")
         property("sonar.login", System.getenv()["SONAR_LOGIN"] ?: "a1303c954ac40b5bcf728edc4d0fa810e618ec18")
@@ -86,7 +89,7 @@ detekt {
 tasks {
     "asciidoctor"(AsciidoctorTask::class) {
         sourceDir = file("src/docs")
-        outputDir = file("build/docs")
+        outputDir = file("$buildDir/docs")
 
         attributes(
             mapOf(
@@ -115,6 +118,30 @@ tasks {
         dependsOn("detekt")
     }
 
+    changelog {
+        toRef = "master"
+        isUnstable = true
+
+        lastVersion = "0.0.0"
+
+        issueUrlTemplate = "$github_url/$github_org/$project_name/issues/:issueId"
+        commitUrlTemplate = "$github_url/$github_org/$project_name/commit/:commitId"
+        mentionUrlTemplate = "$github_url/:username"
+
+        jsonFile = file("$buildDir/changelog/changelog.json")
+        fileSets = setOf(
+                FileSet(
+                    file("${project.rootDir}/config/gitlog/CHANGELOG.mustache"),
+                    file("$buildDir/docs/changelog.adoc")
+                )
+        )
+    }
+
+    derive {
+        toRef = "master"
+        isUnstable = true
+        derivedVersionMark = "NEXT_VERSION:=="
+    }
 }
 
 tasks.test {
