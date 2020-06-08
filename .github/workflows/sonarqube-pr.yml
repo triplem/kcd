@@ -1,7 +1,7 @@
 name: CI with Gradle
 
 on:
-  pull-request:
+  pull_request:
     branches:
       - master
 
