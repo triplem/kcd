@@ -2,14 +2,12 @@ package org.javafreedom.kcd.adapters.persistence
 
 import com.datastax.oss.driver.api.core.CqlSession
 import com.datastax.oss.driver.api.core.cql.Row
-import java.lang.RuntimeException
 import java.time.Instant
-import java.util.*
+import java.util.UUID
 
 fun CqlSession.keyspaceExists(): Boolean {
     return this.keyspace.isPresent
-            && this.metadata.getKeyspace(this.keyspace.get()).isPresent
-            && !this.metadata.getKeyspace(this.keyspace.get()).isEmpty
+            && this.metadata.getKeyspace(this.keyspace.get()).map { true }.orElse(false)
 }
 
 fun Row.getUuidNonEmpty(name: String): UUID {
