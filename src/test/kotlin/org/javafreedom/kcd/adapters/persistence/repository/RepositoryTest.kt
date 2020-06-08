@@ -6,6 +6,8 @@ import com.github.nosan.embedded.cassandra.api.cql.CqlDataSet
 import com.github.nosan.embedded.cassandra.junit5.test.CassandraExtension
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.extension.RegisterExtension
+import java.time.Duration
+import java.time.temporal.ChronoUnit
 import java.util.function.Consumer
 import kotlin.reflect.KClass
 import kotlin.reflect.full.primaryConstructor
@@ -24,8 +26,8 @@ open class RepositoryTest<R : Repository> {
         var cassandraExtension = CassandraExtension().withCassandraFactory(
                 com.github.nosan.embedded.cassandra.EmbeddedCassandraFactory().apply {
                     setArtifact(com.github.nosan.embedded.cassandra.artifact.Artifact.ofVersion("4.0-alpha4"))
+                    timeout(Duration.of(3, ChronoUnit.MINUTES))
                     configProperties.putIfAbsent("enable_materialized_views", true)
-                    configProperties.putIfAbsent("startup-timeout", "2m")
                     jvmOptions.addAll(listOf("-XX:ActiveProcessorCount=1"))
                 }
             )
