@@ -6,8 +6,3 @@ and the https://ktor.io/[ktor].
 More documentation can be found in src/docs.
 
 Some hints on creating a new version:
-
-[source,sh]
-----
-./gradlew derive --preRelease='SNAPSHOT' -i | grep 'NEXT_VERSION:==' | sed 's/^.*NEXT_VERSION:==//g'
-----
