@@ -139,6 +139,7 @@ tasks {
 
     derive {
         toRef = "master"
+        lastVersion = "0.0.0"
         isUnstable = true
         derivedVersionMark = "NEXT_VERSION:=="
     }
