@@ -11,6 +11,8 @@ val junit_version: String by project
 val github_url: String by project
 val github_org: String by project
 
+val github_project_url = "$github_url/$github_org/$project_name"
+
 
 /**
  * Builds the dependency notation for the named Ktor [module] at the given [version].
@@ -67,10 +69,10 @@ sonarqube {
         property("sonar.host.url", System.getenv()["SONAR_HOST_URL"] ?: "https://sonarcloud.io")
         property("sonar.login", System.getenv()["SONAR_TOKEN"] ?: "" )
         property("sonar.scm.provider", "git")
-//        property("sonar.links.homepage", "https://jmeter.apache.org")
-//        property("sonar.links.ci", "https://builds.apache.org/job/JMeter-trunk/")
-//        property("sonar.links.scm", "https://jmeter.apache.org/svnindex.html")
-//        property("sonar.links.issue", "https://jmeter.apache.org/issues.html")
+        property("sonar.links.homepage", "$github_project_url")
+        property("sonar.links.ci", "$github_project_url/actions")
+        property("sonar.links.scm", "$github_project_url")
+        property("sonar.links.issue", "$github_project_url/issues")
         property("sonar.coverage.jacoco.xmlReportPaths", "$buildDir/reports/jacoco/test/jacoco.xml")
         property("sonar.kotlin.detekt.reportPaths", "build/reports/detekt/detekt.xml")
     }
@@ -124,8 +126,8 @@ tasks {
 
         lastVersion = "0.0.0"
 
-        issueUrlTemplate = "$github_url/$github_org/$project_name/issues/:issueId"
-        commitUrlTemplate = "$github_url/$github_org/$project_name/commit/:commitId"
+        issueUrlTemplate = "$github_project_url/issues/:issueId"
+        commitUrlTemplate = "$github_project_url/commit/:commitId"
         mentionUrlTemplate = "$github_url/:username"
 
         jsonFile = file("$buildDir/changelog/changelog.json")
