@@ -24,5 +24,4 @@ jobs:
       id: version
       run: echo ::set-output name=VERSION::$(./gradlew derive --preRelease='SNAPSHOT' -i | grep 'NEXT_VERSION:==' | sed 's/^.*NEXT_VERSION:==//g')
     - name: print variable
-      with:
-        args: echo {{ steps.version.outputs.VERSION }}
+      run: echo {{ steps.version.outputs.VERSION }}
