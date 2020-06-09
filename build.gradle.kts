@@ -65,7 +65,7 @@ sonarqube {
         property("sonar.organization", System.getenv()["SONAR_ORGANIZATION"] ?: "$github_org")
         property("sonar.projectVersion", project.version.toString())
         property("sonar.host.url", System.getenv()["SONAR_HOST_URL"] ?: "https://sonarcloud.io")
-        property("sonar.login", System.getenv()["SONAR_LOGIN"] ?: "a1303c954ac40b5bcf728edc4d0fa810e618ec18")
+        property("sonar.login", System.getenv()["SONAR_TOKEN"] ?: "" )
         property("sonar.scm.provider", "git")
 //        property("sonar.links.homepage", "https://jmeter.apache.org")
 //        property("sonar.links.ci", "https://builds.apache.org/job/JMeter-trunk/")
