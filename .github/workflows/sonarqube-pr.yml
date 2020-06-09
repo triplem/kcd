@@ -21,7 +21,8 @@ jobs:
     - name: Build with Gradle
       run: ./gradlew build sonarqube
     - name: Create Snapshot release
-      run: echo "Define Variable"
-      env: ./gradlew derive --preRelease='SNAPSHOT' -i | grep 'NEXT_VERSION:==' | sed 's/^.*NEXT_VERSION:==//g' > VERSION
+      id: version
+      run: echo ::set-output name=VERSION::$(./gradlew derive --preRelease='SNAPSHOT' -i | grep 'NEXT_VERSION:==' | sed 's/^.*NEXT_VERSION:==//g')
     - name: print variable
-      run: echo "$(cat VERSION)"
+      with:
+        args: echo {{ steps.version.outputs.VERSION }}
