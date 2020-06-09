@@ -12,7 +12,7 @@ val github_url: String by project
 val github_org: String by project
 
 val github_project_url = "$github_url/$github_org/$project_name"
-
+val project_reports_dir = "$buildDir/reports"
 
 /**
  * Builds the dependency notation for the named Ktor [module] at the given [version].
@@ -73,8 +73,8 @@ sonarqube {
         property("sonar.links.ci", "$github_project_url/actions")
         property("sonar.links.scm", "$github_project_url")
         property("sonar.links.issue", "$github_project_url/issues")
-        property("sonar.coverage.jacoco.xmlReportPaths", "$buildDir/reports/jacoco/test/jacoco.xml")
-        property("sonar.kotlin.detekt.reportPaths", "build/reports/detekt/detekt.xml")
+        property("sonar.coverage.jacoco.xmlReportPaths", "$project_reports_dir/jacoco/test/jacoco.xml")
+        property("sonar.kotlin.detekt.reportPaths", "$project_reports_dir/detekt/detekt.xml")
     }
 }
 
@@ -107,7 +107,7 @@ tasks {
     "jacocoTestReport"(JacocoReport::class) {
         reports {
             xml.isEnabled = true
-            xml.destination = File("$buildDir/reports/jacoco/test/jacoco.xml")
+            xml.destination = File("$project_reports_dir/jacoco/test/jacoco.xml")
         }
     }
 
@@ -116,7 +116,6 @@ tasks {
     }
 
     "sonarqube"(SonarQubeTask::class) {
-        dependsOn("jacocoTestReport")
         dependsOn("detekt")
     }
 
@@ -152,6 +151,12 @@ tasks.test {
     testLogging {
         events("passed", "skipped", "failed")
     }
+}
+
+tasks.register("sonarqubeWithDependencies") {
+    dependsOn("jacocoTestReport")
+    dependsOn("detekt")
+    dependsOn("sonarqube")
 }
 
 repositories {

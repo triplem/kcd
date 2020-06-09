@@ -1,6 +1,9 @@
 name: Push - CI with Gradle
 
-on: [push]
+on:
+  push:
+    branches-ignore:
+      - master
 
 jobs:
   compile:
@@ -31,13 +34,15 @@ jobs:
           java-version: 11
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
-      - name: Compile
-        run: ./gradlew clean test
+      - name: Run Tests
+        run: ./gradlew clean test detekt jacocoTestReport
       - name: Upload test results
         uses: actions/upload-artifact@v1
         with:
-          name: build
-          path: build
+          - name: jacoco
+            path: build/reports/jacoco/test/jacoco.xml
+          - name: detekt
+            path: build/reports/detekt.xml
 
   sonarqube:
     name: SonarQube Check
@@ -55,9 +60,12 @@ jobs:
     - name: Download test results
       uses: actions/download-artifact@v1
       with:
-        name: build
+        - name: jacoco
+          path: build/reports/jacoco/test/jacoco.xml
+        - name: detekt
+          path: build/reports/detekt.xml
     - name: Sonarqube Check
-      run: ./gradlew sonarqube
+      run: ./gradlew sonarqube -x test -x detekt
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
