@@ -1,10 +1,6 @@
-name: CI with Gradle
+name: Push - CI with Gradle
 
-on:
-  push:
-  pull_request:
-    branches:
-      - master
+on: [push]
 
 jobs:
   build:
@@ -21,8 +17,3 @@ jobs:
       run: chmod +x gradlew
     - name: Build with Gradle
       run: ./gradlew build sonarqube
-    - name: Create Snapshot release
-      id: version
-      run: echo ::set-output name=VERSION::$(./gradlew derive --preRelease='SNAPSHOT' -i | grep 'NEXT_VERSION:==' | sed 's/^.*NEXT_VERSION:==//g')
-    - name: print variable
-      run: echo {{ steps.version.outputs.VERSION }}
