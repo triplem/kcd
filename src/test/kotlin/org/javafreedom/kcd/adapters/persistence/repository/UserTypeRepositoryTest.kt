@@ -16,12 +16,12 @@ class UserTypeRepositoryTest: RepositoryTest<UserTypeRepository>() {
         }
     }
 
-    @BeforeTest
+//    @BeforeTest
     fun createRepo() {
         createRepository<UserTypeRepository>()
     }
 
-    @Test
+//    @Test
     fun `find types by user`() {
         runBlocking {
             getSut().insert("user1", "type1")

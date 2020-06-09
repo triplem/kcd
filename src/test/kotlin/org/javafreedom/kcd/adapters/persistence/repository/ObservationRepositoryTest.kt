@@ -23,12 +23,12 @@ class ObservationRepositoryTest: RepositoryTest<ObservationRepository>() {
         }
     }
 
-    @BeforeTest
+//    @BeforeTest
     fun createRepo() {
         createRepository<ObservationRepository>()
     }
 
-    @Test
+//    @Test
     fun `find by non-existent id`() {
         val wrongUuid = UUID.randomUUID()
         val exception = assertThrows<NoDataForQueryFound> {
@@ -40,7 +40,7 @@ class ObservationRepositoryTest: RepositoryTest<ObservationRepository>() {
         assertEquals("exception expected", "id = $wrongUuid", exception.message)
     }
 
-    @Test
+//    @Test
     fun `insert Data`() {
         val entryDate = Instant.now().truncatedTo(ChronoUnit.MILLIS)
         val id = UUID.randomUUID();
