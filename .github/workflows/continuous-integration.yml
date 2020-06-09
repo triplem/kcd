@@ -82,11 +82,9 @@ jobs:
       - name: create release
         run: ./gradlew assemble
       - name: Create Snapshot
-        id: version
         if: ${{ github.ref != 'master' }}
         run: echo ::set-output name=VERSION::$(./gradlew derive --preRelease='SNAPSHOT' -i | grep 'NEXT_VERSION:==' | sed 's/^.*NEXT_VERSION:==//g')
       - name: Create Release
-        id: version
         if: ${{ github.ref == 'master' }}
         run: echo ::set-output name=VERSION::$(./gradlew derive -i | grep 'NEXT_VERSION:==' | sed 's/^.*NEXT_VERSION:==//g')
       - name: print variable
