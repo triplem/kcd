@@ -3,8 +3,8 @@ name: Push - CI with Gradle
 on: [push]
 
 jobs:
-  build:
-
+  compile:
+    name: Compile
     runs-on: ubuntu-latest
 
     steps:
@@ -15,14 +15,47 @@ jobs:
         java-version: 11
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
-    - name: Build with Gradle
-      run: ./gradlew build
+    - name: Compile
+      run: ./gradlew clean compileJava compileTestJava
 
-  sonarqube:
-    needs: build
+  tests:
+    name: Tests
+    needs: Compile
     runs-on: ubuntu-latest
 
     steps:
+      - uses: actions/checkout@v2
+      - name: Set up JDK 11
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+      - name: Compile
+        run: ./gradlew clean test
+      - name: Upload test results
+        uses: actions/upload-artifact@v1
+        with:
+          name: build
+          path: build
+
+  sonarqube:
+    name: SonarQube Check
+    needs: tests
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up JDK 11
+      uses: actions/setup-java@v1
+      with:
+        java-version: 11
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
+    - name: Download test results
+      uses: actions/download-artifact@v1
+      with:
+        name: build
     - name: Sonarqube Check
       run: ./gradlew sonarqube
       env:
