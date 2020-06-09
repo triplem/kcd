@@ -23,7 +23,7 @@ jobs:
 
   tests:
     name: Tests
-    needs: Compile
+    needs: compile
     runs-on: ubuntu-latest
 
     steps:
@@ -39,10 +39,8 @@ jobs:
       - name: Upload test results
         uses: actions/upload-artifact@v1
         with:
-          - name: jacoco
-            path: build/reports/jacoco/test/jacoco.xml
-          - name: detekt
-            path: build/reports/detekt.xml
+          - name: reports
+            path: build/reports
 
   sonarqube:
     name: SonarQube Check
@@ -60,10 +58,8 @@ jobs:
     - name: Download test results
       uses: actions/download-artifact@v1
       with:
-        - name: jacoco
-          path: build/reports/jacoco/test/jacoco.xml
-        - name: detekt
-          path: build/reports/detekt.xml
+        - name: reports
+          path: build/reports
     - name: Sonarqube Check
       run: ./gradlew sonarqube -x test -x detekt
       env:

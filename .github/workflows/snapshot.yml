@@ -1,14 +1,12 @@
 name: Version
 
 on:
-  pull_request:
+  push:
     branches:
       - master
 
 jobs:
   version:
-    needs: build
-
     runs-on: ubuntu-latest
 
     steps:
