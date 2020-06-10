@@ -21,7 +21,7 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
       - name: set branch name
-        run: echo ::set-env name=GIT_BRANCH::$(${GITHUB_REF##*/})
+        run: echo ::set-env name=GIT_BRANCH::$(echo ${GITHUB_REF##*/})
       - name: Create Snapshot
         if: ${{ github.ref != 'master' }}
         run: echo ::set-env name=VERSION::$(./gradlew derive --preRelease='SNAPSHOT-'${GITHUB_REF##*/} -i --rerun-tasks -DGIT_BRANCH_NAME=${{env.GIT_BRANCH}} | grep 'NEXT_VERSION:==' | sed 's/^.*NEXT_VERSION:==//g')
