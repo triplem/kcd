@@ -85,9 +85,9 @@ jobs:
         run: ./gradlew assemble
       - name: Create Snapshot
         if: ${{ github.ref != 'master' }}
-        run: echo ::set-output name=VERSION::$(./gradlew derive --preRelease='SNAPSHOT' -i | grep 'NEXT_VERSION:==' | sed 's/^.*NEXT_VERSION:==//g')
+        run: echo ::set-output name=VERSION::$(./gradlew derive --preRelease='SNAPSHOT-${{ github.ref }}' -i --rerun-tasks | grep 'NEXT_VERSION:==' | sed 's/^.*NEXT_VERSION:==//g')
       - name: Create Release
         if: ${{ github.ref == 'master' }}
-        run: echo ::set-output name=VERSION::$(./gradlew derive -i | grep 'NEXT_VERSION:==' | sed 's/^.*NEXT_VERSION:==//g')
+        run: echo ::set-output name=VERSION::$(./gradlew derive -i --rerun-tasks | grep 'NEXT_VERSION:==' | sed 's/^.*NEXT_VERSION:==//g')
       - name: print variable
         run: echo ${{ steps.version.outputs.VERSION }}
