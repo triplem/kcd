@@ -22,7 +22,7 @@ jobs:
         run: chmod +x gradlew
       - name: Create Snapshot
         if: ${{ github.ref != 'master' }}
-        run: echo $(./gradlew derive --preRelease='SNAPSHOT-'${GITHUB_REF##*/} -i --rerun-tasks | grep 'NEXT_VERSION:==' | sed 's/^.*NEXT_VERSION:==//g')
+        run: echo ::set-env name=VERSION::$(./gradlew derive --preRelease='SNAPSHOT-'${GITHUB_REF##*/} -i --rerun-tasks | grep 'NEXT_VERSION:==' | sed 's/^.*NEXT_VERSION:==//g')
       - name: Create Release
         if: ${{ github.ref == 'master' }}
         run: echo "::set-output name=VERSION::$(./gradlew derive -i --rerun-tasks | grep 'NEXT_VERSION:==' | sed 's/^.*NEXT_VERSION:==//g')"
