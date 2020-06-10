@@ -27,4 +27,4 @@ jobs:
         if: ${{ github.ref == 'master' }}
         run: echo "::set-output name=VERSION::$(./gradlew derive -i --rerun-tasks | grep 'NEXT_VERSION:==' | sed 's/^.*NEXT_VERSION:==//g')"
       - name: print variable
-        run: echo ${{ steps.version.outputs.VERSION }}
+        run: echo ${{ env.VERSION }}
