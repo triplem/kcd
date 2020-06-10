@@ -85,4 +85,4 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
       - name: Create Package
-        run: ./gradlew release -i
+        run: ./gradlew release -i -Dorg.ajoberstar.grgit.auth.username=${{ secrets.GITHUB_TOKEN }} -Dorg.ajoberstar.grgit.auth.password
