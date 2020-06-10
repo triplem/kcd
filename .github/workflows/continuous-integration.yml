@@ -4,6 +4,7 @@ on:
   push:
     branches-ignore:
       - master
+      - test-pr
 
 jobs:
   compile:
