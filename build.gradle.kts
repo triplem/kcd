@@ -139,7 +139,7 @@ tasks {
     }
 
     derive {
-        toRef = "master"
+        toRef = System.getProperty("GIT_BRANCH_NAME") ?: "master"
         lastVersion = "0.0.0"
         isUnstable = true
         derivedVersionMark = "NEXT_VERSION:=="
