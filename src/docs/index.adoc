@@ -274,3 +274,7 @@ https://medium.com/@andreclassen1337/goodbye-runtimetypeadapterfactory-polymorph
 Dates are always stored, regardless of their "initial" (incoming) timezone, in UTC. This is done during the de-serialization in the Rest-API.
 
 
+=== BUild
+
+until https://github.com/ajoberstar/reckon/issues/134 is resolved, we do use rather old
+version https://github.com/tschulte/gradle-semantic-release-plugin

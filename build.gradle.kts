@@ -1,7 +1,6 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.asciidoctor.gradle.AsciidoctorTask
 import org.sonarqube.gradle.SonarQubeTask
-import team.yi.gradle.plugin.FileSet
 
 val project_name: String by project
 val logback_version: String by project
@@ -13,6 +12,8 @@ val github_org: String by project
 
 val github_project_url = "$github_url/$github_org/$project_name"
 val project_reports_dir = "$buildDir/reports"
+
+val ghToken = System.getenv()["GITHUB_TOKEN"] ?: ""
 
 /**
  * Builds the dependency notation for the named Ktor [module] at the given [version].
@@ -33,7 +34,7 @@ plugins {
     id("org.sonarqube") version "2.8"
     jacoco
     id("io.gitlab.arturbosch.detekt") version "1.8.0"
-    id("team.yi.semantic-gitlog") version "0.5.3"
+    id("de.gliderpilot.semantic-release") version "1.4.0"
 }
 
 group = "org.javafreedom.kcd"
@@ -88,6 +89,13 @@ detekt {
     ignoreFailures = true
 }
 
+semanticRelease {
+    repo.apply {
+        releaseAsset(tasks.jar.get() as AbstractArchiveTask)
+        releaseAsset(tasks.kotlinSourcesJar.get() as AbstractArchiveTask)
+    }
+}
+
 tasks {
     "asciidoctor"(AsciidoctorTask::class) {
         sourceDir = file("src/docs")
@@ -117,32 +125,6 @@ tasks {
 
     "sonarqube"(SonarQubeTask::class) {
         dependsOn("detekt")
-    }
-
-    changelog {
-        toRef = "master"
-        isUnstable = true
-
-        lastVersion = "0.0.0"
-
-        issueUrlTemplate = "$github_project_url/issues/:issueId"
-        commitUrlTemplate = "$github_project_url/commit/:commitId"
-        mentionUrlTemplate = "$github_url/:username"
-
-        jsonFile = file("$buildDir/changelog/changelog.json")
-        fileSets = setOf(
-                FileSet(
-                    file("${project.rootDir}/config/gitlog/CHANGELOG.mustache"),
-                    file("$buildDir/docs/changelog.adoc")
-                )
-        )
-    }
-
-    derive {
-        toRef = System.getProperty("GIT_BRANCH_NAME") ?: "master"
-        lastVersion = "0.0.0"
-        isUnstable = true
-        derivedVersionMark = "NEXT_VERSION:=="
     }
 }
 
