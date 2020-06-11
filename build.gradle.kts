@@ -1,5 +1,6 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.asciidoctor.gradle.AsciidoctorTask
+import org.owasp.dependencycheck.reporting.ReportGenerator.Format
 import org.sonarqube.gradle.SonarQubeTask
 
 val project_name: String by project
@@ -34,7 +35,7 @@ plugins {
     id("org.sonarqube") version "2.8"
     jacoco
     id("io.gitlab.arturbosch.detekt") version "1.8.0"
-    id("de.gliderpilot.semantic-release") version "1.4.0"
+    id("org.owasp.dependencycheck") version "5.3.2.1"
 }
 
 group = "org.javafreedom.kcd"
@@ -89,11 +90,10 @@ detekt {
     ignoreFailures = true
 }
 
-semanticRelease {
-    repo.apply {
-        releaseAsset(tasks.jar.get() as AbstractArchiveTask)
-        releaseAsset(tasks.kotlinSourcesJar.get() as AbstractArchiveTask)
-    }
+dependencyCheck {
+    failBuildOnCVSS = 3F
+    formats = listOf(Format.HTML, Format.JUNIT, Format.XML)
+    suppressionFile = "$projectDir/config/owasp/owasp-supression.xml"
 }
 
 tasks {
@@ -126,6 +126,7 @@ tasks {
     "sonarqube"(SonarQubeTask::class) {
         dependsOn("detekt")
     }
+
 }
 
 tasks.test {
@@ -173,6 +174,10 @@ dependencies {
 
     implementation("com.datastax.oss:java-driver-core:$datastax_version")
     implementation("com.datastax.oss:java-driver-query-builder:$datastax_version")
+    implementation("io.netty:netty-handler:4.1.46.Final")
+    implementation("org.apache.tinkerpop:gremlin-core:3.4.7")
+    implementation("org.apache.tinkerpop:gremlin-driver:3.4.7")
+    implementation("org.apache.tinkerpop:tinkergraph-gremlin:3.4.7")
 
     testImplementation(kotlin("test"))
     testImplementation(kotlin("test-junit5"))

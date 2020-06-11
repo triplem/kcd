@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suppressions xmlns="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.3.xsd">
+    <suppress>
+        <notes><![CDATA[
+      Supresses the build time dependency jruby, which is contained in asciidoctor.
+      here: org.jruby/dirgra
+      ]]></notes>
+        <sha1>91c78b3f134c5b1f04d3a6447d246cf0a0d9a8e2</sha1>
+        <cve>CVE-2011-4838</cve>
+        <cve>CVE-2010-1330</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+      Supresses the build time dependency jruby, which is contained in asciidoctor.
+      here: bcprov-jdk15-on-1.56.jar
+      ]]></notes>
+        <sha1>a153c6f9744a3e9dd6feab5e210e1c9861362ec7</sha1>
+        <cve>CVE-2018-1000613</cve>
+        <cve>CVE-2017-13098</cve>
+        <cve>CVE-2018-1000180</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+      Supresses the build time dependency jruby, which is contained in asciidoctor.
+      here: jquery.js
+      ]]></notes>
+        <sha1>71cce71820cc47b3bd1098618d248325fcf24ddb</sha1>
+        <cve>CVE-2015-9251</cve>
+        <cve>CVE-2012-6708</cve>
+        <cve>CVE-2019-11358</cve>
+        <vulnerabilityName>Regex in its jQuery.htmlPrefilter  sometimes may introduce XSS</vulnerabilityName>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+      Supresses the build time dependency jruby, which is contained in asciidoctor.
+      here: snakeyaml-1.18.jar
+      ]]></notes>
+        <sha1>e4a441249ade301985cb8d009d4e4a72b85bf68e</sha1>
+        <cve>CVE-2017-18640</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+      Supresses the build time dependency jruby, which is contained in asciidoctor.
+      here: jopenssl.jar
+      ]]></notes>
+        <sha1>2bb00e94b9f0a60e302bda4e89911a29fa53cc3e</sha1>
+        <cve>CVE-2011-4838</cve>
+        <cve>CVE-2010-1330</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+      Supresses the build time dependency jruby, which is contained in asciidoctor.
+      here: readline.jar
+      ]]></notes>
+        <sha1>bbbfb179d82337e92f7db452745389b1d02141be</sha1>
+        <cve>CVE-2011-4838</cve>
+        <cve>CVE-2010-1330</cve>
+    </suppress>
+</suppressions>
