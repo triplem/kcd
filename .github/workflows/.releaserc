@@ -10,7 +10,7 @@
             ]
         }],
         ["@semantic-release/exec", {
-          "successCmd" : "release-files.sh ${nextRelease.version}"
+          "prepareCmd" : "./release-files.sh ${nextRelease.version}"
         }]
     ]
 }
