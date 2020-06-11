@@ -82,13 +82,17 @@ jobs:
           java-version: 11
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
-      - name: Create Package
-        run: ./gradlew assemble
-      - name: Create Snapshot
-        if: ${{ github.ref != 'master' }}
-        run: echo ::set-output name=VERSION::$(./gradlew derive --preRelease='SNAPSHOT-${GITHUB_REF##*/}' -i --rerun-tasks | grep 'NEXT_VERSION:==' | sed 's/^.*NEXT_VERSION:==//g')
-      - name: Create Release
-        if: ${{ github.ref == 'master' }}
-        run: echo ::set-output name=VERSION::$(./gradlew derive -i --rerun-tasks | grep 'NEXT_VERSION:==' | sed 's/^.*NEXT_VERSION:==//g')
-      - name: print variable
-        run: echo ${{ steps.version.outputs.VERSION }}
+      - name: Build package
+        run: ./gradlew assemble -x test
+      - name: Setup Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 13
+      - name: Add plugin for conventional commits
+        run: npm install conventional-changelog-conventionalcommits
+        working-directory: ./.github/workflow
+      - name: Release to GitHub
+        working-directory: ./.github/workflow
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npx semantic-release
