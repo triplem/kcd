@@ -1,0 +1,14 @@
+---
+branches:
+- master
+plugins:
+- - "@semantic-release/commit-analyzer"
+  - preset: conventionalcommits
+- - "@semantic-release/release-notes-generator"
+  - preset: conventionalcommits
+- - "@semantic-release/github"
+  - assets:
+    - path: build/distributions/kcd.tar
+      label: Binary - Tar
+    - path: build/distributions/kcd.zip
+      label: Binary - Zip
