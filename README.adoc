@@ -13,3 +13,5 @@ Some hints on creating a new version:
 https://www.asyncapi.com/blog/automated-releases-part-two/
 
 https://semantic-release.gitbook.io/semantic-release/
+
+test
