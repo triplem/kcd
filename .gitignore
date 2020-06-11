@@ -6,3 +6,5 @@
 *.ipr
 *.iws
 VERSION
+/node_modules
+package-lock.json

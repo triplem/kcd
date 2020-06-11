@@ -103,9 +103,9 @@ jobs:
           node-version: 13
       - name: Add plugin for conventional commits
         run: npm install conventional-changelog-conventionalcommits
-        working-directory: ./.github/workflow
+        working-directory: ./
       - name: Release to GitHub
-        working-directory: ./.github/workflow
+        working-directory: ./
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: npx semantic-release
