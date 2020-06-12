@@ -5,8 +5,8 @@
         "@semantic-release/release-notes-generator",
         ["@semantic-release/github", {
             "assets": [
-                {"path": "../../build/distributions/kcd_${nextRelease.version}.tar", "label": "Binary - Tar"},
-                {"path": "../../build/distributions/kcd_${nextRelease.version}.zip", "label": "Binary - Zip"}
+                {"path": "../../build/distributions/kcd_*.tar", "label": "Binary - Tar"},
+                {"path": "../../build/distributions/kcd_*.zip", "label": "Binary - Zip"}
             ]
         }],
         ["@semantic-release/exec", {
