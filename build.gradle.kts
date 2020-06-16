@@ -36,6 +36,7 @@ plugins {
     jacoco
     id("io.gitlab.arturbosch.detekt") version "1.8.0"
     id("org.owasp.dependencycheck") version "5.3.2.1"
+    id("maven-publish")
 }
 
 group = "org.javafreedom.kcd"
@@ -94,6 +95,24 @@ dependencyCheck {
     failBuildOnCVSS = 3F
     formats = listOf(Format.HTML, Format.JUNIT, Format.XML)
     suppressionFile = "$projectDir/config/owasp/owasp-supression.xml"
+}
+
+publishing {
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/$github_org/$project_name")
+            credentials {
+                username = "i-dont-care"
+                password = System.getenv("GITHUB_TOKEN")
+            }
+        }
+    }
+    publications {
+        create<MavenPublication>("gpr") {
+            from(components["java"])
+        }
+    }
 }
 
 tasks {

@@ -1,0 +1,29 @@
+= Semantic Release für gradle Projekte
+
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+
+Bereits 1997 hat Eric S. Raymond in seinem Essay "link:https://de.wikipedia.org/wiki/Die_Kathedrale_und_der_Basar[Die Kathedrale und der Basar]"
+den Leitsatz "Release early, release often" geprägt. Mit dem DevOps-Paradigma ist das Continuous Delivery Konzept,
+das eben diesem Leitsatz folgt, aktueller den je. In der aktuellen Software-Entwicklung geht es also auch darum, Releases
+reibungslos erstellen zu können. Damit dies funktioniert, muss der Erstellungs-Prozess für ein Release einfach,
+reproduzierbar und automatisiert sein.
+
+Um Releases ein-eindeutig identifizeren und referenzieren zu können, wird eine Namensgebung für Versionen benötigt. Dazu
+hat sich das link:https://semver.org/[Semantic Versioning] durchgesetzt. Mit der Verwendung von
+link:https://www.conventionalcommits.org/[Conventional Commits] können Entwickler mit einfachen Commit-Messages
+angeben, welcher Teil einer Version inkrementiert werden soll.
+
+Um den Release Prozess mit den Vorgenannten Spezifikationen zu automatisieren, gibt es im Javascript-Bereich das
+link:https://semantic-release.gitbook.io/semantic-release/[Semantic Release] Toolset. Dieses Toolset ist zwar für Javascript
+gebaut und optimiert, kann jedoch auch in anderen Umgebungen eingesetzt werden. In diesem Artikel möchte ich auf die
+Verwendung in einem Java-Projekt, das mit Gradle gebaut wird, eingehen.
+
+
+
+
