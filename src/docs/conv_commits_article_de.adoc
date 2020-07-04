@@ -25,7 +25,7 @@ enthält Vorgaben, wie die Commit-Messages angelegt werden müssen. Einige Schl�
 * feat
 * BREAKING CHANGE
 
-Mit diesen Prefixes in den Commit Messages wird entschieden, welcher Teiler einer Versionsnummer inkrementiert wird.
+Mit diesen Prefixes in den Commit Messages wird entschieden, welcher Teil einer Versionsnummer inkrementiert wird.
 Somit können dann Builds automatisch gestartet und mit der daraus gewonnenen Versionnummer publiziert werden.
 
 Um den Release Prozess mit den vorgenannten Spezifikationen zu automatisieren, gibt es im Javascript-Bereich das
@@ -69,5 +69,6 @@ eingesehen werden) um den Prozess zu steuern. Beispielhaft kann das dann wie fol
     ]
 }
 ----
+
 
 
