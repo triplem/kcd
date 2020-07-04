@@ -70,5 +70,12 @@ eingesehen werden) um den Prozess zu steuern. Beispielhaft kann das dann wie fol
 }
 ----
 
+Das aufgerufene Skript (release-files.sh) sieht dann wie folgt aus:
 
+[source,sh]
+----
+#!/usr/bin/env sh
+cd ../..
+./gradlew -Pversion=$1 publish
+----
 
