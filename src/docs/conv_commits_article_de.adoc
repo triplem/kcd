@@ -59,8 +59,9 @@ eingesehen werden) um den Prozess zu steuern. Beispielhaft kann das dann wie fol
         "@semantic-release/release-notes-generator",
         ["@semantic-release/github", {
             "assets": [
-                {"path": "../../build/distributions/project.tar", "label": "Binary - Tar"},
-                {"path": "../../build/distributions/project.zip", "label": "Binary - Zip"}
+                {"path": "../../build/distributions/project.tar", "label": "Assembly - Tar"},
+                {"path": "../../build/distributions/project.zip", "label": "Assembly - Zip"},
+                {"path": "../../build/libs/kcd-{nextRelease}.jar"}
             ]
         }],
         ["@semantic-release/exec", {
@@ -78,4 +79,11 @@ Das aufgerufene Skript (release-files.sh) sieht dann wie folgt aus:
 cd ../..
 ./gradlew -Pversion=$1 publish
 ----
+
+
+Das Paket wird mit gradle auf das in der build.gradle definierten Repository publiziert.
+
+https://maven.pkg.github.com/triplem/kcd/org/javafreedom/kcd/kcd/1.0.7/kcd-1.0.7.jar
+https://maven.pkg.github.com/triplem/kcd/org/javafreedom/kcd/kcd/maven-metadata.xml
+
 
