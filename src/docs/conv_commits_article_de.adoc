@@ -62,7 +62,7 @@ eingesehen werden) um den Prozess zu steuern. Beispielhaft kann das dann wie fol
             "assets": [
                 {"path": "../../build/distributions/project.tar", "label": "Assembly - Tar"},
                 {"path": "../../build/distributions/project.zip", "label": "Assembly - Zip"},
-                {"path": "../../build/libs/kcd-{nextRelease}.jar"}
+                {"path": "../../build/libs/kcd-{nextRelease}.jar"},
                 {"path": "../../build/libs/kcd-{nextRelease}-sources.jar"}
             ]
         }],
