@@ -60,10 +60,10 @@ eingesehen werden) um den Prozess zu steuern. Beispielhaft kann das dann wie fol
         "@semantic-release/release-notes-generator",
         ["@semantic-release/github", {
             "assets": [
-                {"path": "../../build/distributions/project.tar", "label": "Assembly - Tar"},
-                {"path": "../../build/distributions/project.zip", "label": "Assembly - Zip"},
-                {"path": "../../build/libs/kcd-{nextRelease}.jar"},
-                {"path": "../../build/libs/kcd-{nextRelease}-sources.jar"}
+                {"path": "../../build/distributions/kcd.tar", "label": "Assembly - Tar ${nextRelease.version}"},
+                {"path": "../../build/distributions/kcd.zip", "label": "Assembly - Zip ${nextRelease.version}"},
+                {"path": "../../build/libs/kcd-*.jar", "label": "Release Jar ${nextRelease.version}"},
+                {"path": "../../build/libs/kcd-*-sources.jar", "label": "Release SourceJar ${nextRelease.version}"}
             ]
         }],
         ["@semantic-release/exec", {
