@@ -97,24 +97,6 @@ dependencyCheck {
     suppressionFile = "$projectDir/config/owasp/owasp-supression.xml"
 }
 
-publishing {
-    repositories {
-        maven {
-            name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/$github_org/$project_name")
-            credentials {
-                username = "i-dont-care"
-                password = System.getenv("GITHUB_TOKEN")
-            }
-        }
-    }
-    publications {
-        create<MavenPublication>("gpr") {
-            from(components["java"])
-        }
-    }
-}
-
 tasks {
     "asciidoctor"(AsciidoctorTask::class) {
         sourceDir = file("src/docs")
@@ -146,6 +128,10 @@ tasks {
         dependsOn("detekt")
     }
 
+    val sourcesJar by creating(Jar::class) {
+        archiveClassifier.set("sources")
+        from(sourceSets.main.get().allSource)
+    }
 }
 
 tasks.test {
@@ -159,6 +145,25 @@ tasks.register("sonarqubeWithDependencies") {
     dependsOn("jacocoTestReport")
     dependsOn("detekt")
     dependsOn("sonarqube")
+}
+
+publishing {
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/$github_org/$project_name")
+            credentials {
+                username = "i-dont-care"
+                password = System.getenv("GITHUB_TOKEN")
+            }
+        }
+    }
+    publications {
+        create<MavenPublication>("gpr") {
+            from(components["java"])
+            artifact(tasks["sourcesJar"])
+        }
+    }
 }
 
 repositories {

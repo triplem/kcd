@@ -50,6 +50,7 @@ zu ermöglichen, muss die Version in den gradle.properties definiert werden und 
 Das Semantic Release Toolset verwendet die Datei .releaserc (andere Dateien bzw. Formate können link:https://semantic-release.gitbook.io/semantic-release/usage/configuration[hier]
 eingesehen werden) um den Prozess zu steuern. Beispielhaft kann das dann wie folgt aussehen:
 
+.releaserc
 [source,json]
 ----
 {
@@ -62,6 +63,7 @@ eingesehen werden) um den Prozess zu steuern. Beispielhaft kann das dann wie fol
                 {"path": "../../build/distributions/project.tar", "label": "Assembly - Tar"},
                 {"path": "../../build/distributions/project.zip", "label": "Assembly - Zip"},
                 {"path": "../../build/libs/kcd-{nextRelease}.jar"}
+                {"path": "../../build/libs/kcd-{nextRelease}-sources.jar"}
             ]
         }],
         ["@semantic-release/exec", {
@@ -71,17 +73,25 @@ eingesehen werden) um den Prozess zu steuern. Beispielhaft kann das dann wie fol
 }
 ----
 
-Das aufgerufene Skript (release-files.sh) sieht dann wie folgt aus:
+In der oben aufgeführten Konfiguration sind einige Plugins des Semantic Release Toolset konfiguriert. Hervorzuheben sind
+das github-Plugin und das exec-Plugin.
 
-[source,sh]
+Über das github-Plugin werden durch gradle erzeugte Artefakte an das github-Release gehängt. Die angegebenen Dateien können
+dann über den Release-Tab des github-Projekts eingesehen werden.
+
+Das exec-Plugin ruft in der Konfiguration in der "prepare"-Phase das Skript release-files.sh mit der erzeugten Versionsnummer
+auf. In diesem Skript wird der link:https://docs.gradle.org/current/userguide/publishing_maven.html[publish-Task] von
+gradle mit der übergebenen Versionsnummer aufgerufen und somit die in der gradle.build.kts angegebenen Artefakte
+versioniert und dann publiziert.
+
+.release-files.sh
+[source,bash]
 ----
 #!/usr/bin/env sh
 cd ../..
 ./gradlew -Pversion=$1 publish
 ----
 
-
-Das Paket wird mit gradle auf das in der build.gradle definierten Repository publiziert.
 
 https://maven.pkg.github.com/triplem/kcd/org/javafreedom/kcd/kcd/1.0.7/kcd-1.0.7.jar
 https://maven.pkg.github.com/triplem/kcd/org/javafreedom/kcd/kcd/maven-metadata.xml
