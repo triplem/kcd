@@ -7,8 +7,8 @@
             "assets": [
                 {"path": "../../build/distributions/kcd.tar", "label": "Binary - Tar"},
                 {"path": "../../build/distributions/kcd.zip", "label": "Binary - Zip"},
-                {"path": "../../build/libs/kcd-{nextRelease}.jar"},
-                {"path": "../../build/libs/kcd-{nextRelease}-sources.jar"}
+                {"path": "../../build/libs/kcd-{nextRelease}.jar", "label": "Release JAR"},
+                {"path": "../../build/libs/kcd-{nextRelease}-sources.jar", "label": "Release SourceJar"}
             ]
         }],
         ["@semantic-release/exec", {
