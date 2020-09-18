@@ -199,9 +199,9 @@ dependencies {
     implementation("com.datastax.oss:java-driver-core:$datastax_version")
     implementation("com.datastax.oss:java-driver-query-builder:$datastax_version")
     implementation("io.netty:netty-handler:4.1.46.Final")
-    implementation("org.apache.tinkerpop:gremlin-core:3.4.7")
-    implementation("org.apache.tinkerpop:gremlin-driver:3.4.7")
-    implementation("org.apache.tinkerpop:tinkergraph-gremlin:3.4.7")
+    implementation("org.apache.tinkerpop:gremlin-core:3.4.8")
+    implementation("org.apache.tinkerpop:gremlin-driver:3.4.8")
+    implementation("org.apache.tinkerpop:tinkergraph-gremlin:3.4.8")
 
     testImplementation(kotlin("test"))
     testImplementation(kotlin("test-junit5"))
