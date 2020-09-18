@@ -1,7 +1,9 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.asciidoctor.gradle.AsciidoctorTask
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.owasp.dependencycheck.reporting.ReportGenerator.Format
 import org.sonarqube.gradle.SonarQubeTask
+import java.text.SimpleDateFormat
+import java.util.Date
 
 val project_name: String by project
 val logback_version: String by project
@@ -15,6 +17,9 @@ val github_project_url = "$github_url/$github_org/$project_name"
 val project_reports_dir = "$buildDir/reports"
 
 val ghToken = System.getenv()["GITHUB_TOKEN"] ?: ""
+
+val revDate = System.getenv()["revdate"] ?: SimpleDateFormat("yyyy-MM-dd").format(Date())
+val revNumber = System.getenv()["revnumber"] ?: "KCD-Team"
 
 /**
  * Builds the dependency notation for the named Ktor [module] at the given [version].
@@ -108,7 +113,9 @@ tasks {
                 "toc"                to "left",
                 "toclevels"          to 2,
                 "idprefix"           to "",
-                "idseparator"        to "-"
+                "idseparator"        to "-",
+                "revnumber"          to "",
+                "revdate"            to ""
             )
         )
     }
@@ -199,9 +206,9 @@ dependencies {
     implementation("com.datastax.oss:java-driver-core:$datastax_version")
     implementation("com.datastax.oss:java-driver-query-builder:$datastax_version")
     implementation("io.netty:netty-handler:4.1.46.Final")
-    implementation("org.apache.tinkerpop:gremlin-core:3.4.7")
-    implementation("org.apache.tinkerpop:gremlin-driver:3.4.7")
-    implementation("org.apache.tinkerpop:tinkergraph-gremlin:3.4.7")
+    implementation("org.apache.tinkerpop:gremlin-core:3.4.8")
+    implementation("org.apache.tinkerpop:gremlin-driver:3.4.8")
+    implementation("org.apache.tinkerpop:tinkergraph-gremlin:3.4.8")
 
     testImplementation(kotlin("test"))
     testImplementation(kotlin("test-junit5"))

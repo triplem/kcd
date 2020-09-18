@@ -25,7 +25,7 @@ open class RepositoryTest<R : Repository> {
         @RegisterExtension
         var cassandraExtension = CassandraExtension().withCassandraFactory(
                 com.github.nosan.embedded.cassandra.EmbeddedCassandraFactory().apply {
-                    setArtifact(com.github.nosan.embedded.cassandra.artifact.Artifact.ofVersion("4.0-alpha4"))
+                    setArtifact(com.github.nosan.embedded.cassandra.artifact.Artifact.ofVersion("4.0-beta2"))
                     timeout = Duration.of(3, ChronoUnit.MINUTES)
                     configProperties.putIfAbsent("enable_materialized_views", true)
                     jvmOptions.addAll(listOf("-XX:ActiveProcessorCount=1"))

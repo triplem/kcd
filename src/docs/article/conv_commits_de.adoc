@@ -94,7 +94,7 @@ gradle mit der übergebenen Versionsnummer aufgerufen und somit die in der gradl
 versioniert und dann publiziert.
 
 .release-files.sh
-[ssource,bash]
+[source,bash]
 ----
 #!/usr/bin/env sh
 cd ../..

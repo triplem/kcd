@@ -28,6 +28,8 @@
         <cve>CVE-2015-9251</cve>
         <cve>CVE-2012-6708</cve>
         <cve>CVE-2019-11358</cve>
+        <cve>CVE-2020-11022</cve>
+        <cve>CVE-2020-11023</cve>
         <vulnerabilityName>Regex in its jQuery.htmlPrefilter  sometimes may introduce XSS</vulnerabilityName>
     </suppress>
     <suppress>
@@ -35,7 +37,6 @@
       Supresses the build time dependency jruby, which is contained in asciidoctor.
       here: snakeyaml-1.18.jar
       ]]></notes>
-        <sha1>e4a441249ade301985cb8d009d4e4a72b85bf68e</sha1>
         <cve>CVE-2017-18640</cve>
     </suppress>
     <suppress>
@@ -55,5 +56,19 @@
         <sha1>bbbfb179d82337e92f7db452745389b1d02141be</sha1>
         <cve>CVE-2011-4838</cve>
         <cve>CVE-2010-1330</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: native-protocol-1.4.11.jar - false report, since it is fixed from cassandra 4.0 onwards
+   ]]></notes>
+        <sha1>5759dc75c83b5d70cf9bcfc440cdc67e70979377</sha1>
+        <cve>CVE-2020-13946</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: gremlin-shaded-3.4.8.jar (shaded: com.fasterxml.jackson.core:jackson-databind:2.9.10.5)
+   ]]></notes>
+        <sha1>42c65cc01f3eb21a0e6162e229d4852053dbbaa4</sha1>
+        <cve>CVE-2020-24616</cve>
     </suppress>
 </suppressions>
