@@ -28,6 +28,7 @@ Der gezeigte Worfklow umfasst die folgednen Schritte:
 
 
 * Bau der Applikation
+* Tests (Unit und ggf. Integration)
 * Statische SourceCode analyse mit SonarQube
 * Sicherheitscheck der Applikation mit OWASP
 * Generierung eines Releases udn Publizierung des Releases auf github und im github maven Repository
