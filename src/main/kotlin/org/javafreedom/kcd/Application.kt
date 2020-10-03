@@ -8,7 +8,6 @@ import io.ktor.serialization.DefaultJsonConfiguration
 import kotlinx.serialization.UseSerializers
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.SerializersModule
-import kotlinx.serialization.serializer
 import mu.KotlinLogging
 import org.javafreedom.kcd.adapters.rest.restModule
 import org.javafreedom.kcd.adapters.persistence.persistenceModule
