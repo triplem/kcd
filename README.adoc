@@ -3,7 +3,6 @@
 ![CI Build](https://github.com/triplem/kcd/workflows/CI%20Build/badge.svg)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=kcd&metric=alert_status)](https://sonarcloud.io/dashboard?id=kcd)
 
-
 This is a proof-of-concept and/or demo on the usage of http://cassandra.apache.org/[Apache Cassandra] using https://kotlinlang.org/[kotlin]
 and the https://ktor.io/[ktor].
 
