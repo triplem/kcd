@@ -18,6 +18,9 @@ object ValueRecalculations {
         println(value.toString())
         println(value.toString())
         println(value.toString())
+        println(value.toString())
+        println(value.toString())
+        println(value.toString())
         return when (value) {
             is Number -> value.toDouble().times(MMOL_TO_MGDL).roundToInt()
             else -> -1
