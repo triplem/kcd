@@ -11,6 +11,12 @@ object ValueRecalculations {
         )
 
     fun mmol(value: Any?): Any {
+        // this should be removed, just to force sonar issues
+        println(value.toString())
+        // println(value.toString())
+        // println(value.toString())
+        println(value.toString())
+        println(value.toString())
         println(value.toString())
         return when (value) {
             is Number -> value.toDouble().times(MMOL_TO_MGDL).roundToInt()
