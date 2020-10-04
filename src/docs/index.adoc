@@ -1,5 +1,8 @@
 = Kotlin/Cassandra Demo
 
+:revnumber: {revnumber}
+:revdate: {revdate}
+
 ifdef::env-github[]
 :tip-caption: :bulb:
 :note-caption: :information_source:
