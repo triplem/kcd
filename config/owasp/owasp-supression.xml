@@ -70,9 +70,6 @@
    ]]></notes>
         <sha1>42c65cc01f3eb21a0e6162e229d4852053dbbaa4</sha1>
         <cve>CVE-2020-24616</cve>
-<<<<<<< HEAD
         <cve>CVE-2020-24750</cve>
-=======
->>>>>>> e595c1c... fix: dependencies
     </suppress>
 </suppressions>
