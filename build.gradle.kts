@@ -1,4 +1,4 @@
-import org.asciidoctor.gradle.AsciidoctorTask
+import org.asciidoctor.gradle.jvm.AsciidoctorTask
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.owasp.dependencycheck.reporting.ReportGenerator.Format
 import org.sonarqube.gradle.SonarQubeTask
@@ -36,7 +36,7 @@ plugins {
     kotlin("plugin.serialization") version "1.3.70"
     application
     id("com.bmuschko.docker-java-application") version "6.4.0"
-    id("org.asciidoctor.convert") version "1.5.9.2"
+    id("org.asciidoctor.jvm.convert") version "3.1.0"
     id("org.sonarqube") version "2.8"
     jacoco
     id("io.gitlab.arturbosch.detekt") version "1.8.0"
@@ -104,8 +104,8 @@ dependencyCheck {
 
 tasks {
     "asciidoctor"(AsciidoctorTask::class) {
-        sourceDir = file("src/docs")
-        outputDir = file("$buildDir/docs")
+        setSourceDir(file("src/docs"))
+        setOutputDir(file("$buildDir/docs"))
 
         attributes(
             mapOf(
