@@ -108,7 +108,7 @@ jobs:
         run: |
           npm install conventional-changelog-conventionalcommits @semantic-release/exec
           echo $REVNUMBER
-          echo "::set-env name=revnumber=$REVNUMBER"
+          echo "::set-env name=revnumber::$REVNUMBER"
         working-directory: ./.github/workflows
       - name: Release to GitHub
         working-directory: ./.github/workflows
