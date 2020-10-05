@@ -107,6 +107,7 @@ jobs:
       - name: Add plugin for conventional commits
         run: |
           npm install conventional-changelog-conventionalcommits @semantic-release/exec
+          echo $REVNUMBER
           echo "::set-env name=revnumber=$REVNUMBER"
         working-directory: ./.github/workflows
       - name: Release to GitHub
