@@ -19,7 +19,7 @@ val project_reports_dir = "$buildDir/reports"
 val ghToken = System.getenv()["GITHUB_TOKEN"] ?: ""
 
 val revDate = System.getenv()["revdate"] ?: SimpleDateFormat("yyyy-MM-dd").format(Date())
-val revNumber = System.getenv()["revnumber"] ?: "KCD-Team"
+val revNumber = System.getenv()["revnumber"] ?: "DEV-Version"
 
 /**
  * Builds the dependency notation for the named Ktor [module] at the given [version].
@@ -114,8 +114,8 @@ tasks {
                 "toclevels"          to 2,
                 "idprefix"           to "",
                 "idseparator"        to "-",
-                "revnumber"          to "",
-                "revdate"            to ""
+                "revnumber"          to "$revNumber",
+                "revdate"            to "$revDate"
             )
         )
     }
