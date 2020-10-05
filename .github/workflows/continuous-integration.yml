@@ -111,6 +111,7 @@ jobs:
         working-directory: ./.github/workflows
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          revnumber: $revnumber
         run: |
           npx semantic-release
           echo 'REV: $revnumber'
