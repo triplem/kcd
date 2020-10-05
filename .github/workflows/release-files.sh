@@ -1,4 +1,5 @@
 #!/usr/bin/env sh
 cd ../..
 ./gradlew -Pversion=$1 publish
-export REVNUMBER=$1
+echo "::set-env name=revnumber::$1"
+echo "revnumber:$1"
