@@ -18,27 +18,27 @@ jobs:
     - name: Compile
       run: ./gradlew clean compileJava compileTestJava
 
-  tests:
-    name: Tests
-    needs: compile
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v2
-      - name: Set up JDK 11
-        uses: actions/setup-java@v1
-        with:
-          java-version: 11
-      - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
-      - name: Run Tests
-        run: ./gradlew clean test detekt jacocoTestReport
-      - name: Upload test results
-        uses: actions/upload-artifact@v1
-        with:
-          name: reports
-          path: build/reports
-
+#  tests:
+#    name: Tests
+#    needs: compile
+#    runs-on: ubuntu-latest
+#
+#    steps:
+#      - uses: actions/checkout@v2
+#      - name: Set up JDK 11
+#        uses: actions/setup-java@v1
+#        with:
+#          java-version: 11
+#      - name: Grant execute permission for gradlew
+#        run: chmod +x gradlew
+#      - name: Run Tests
+#        run: ./gradlew clean test detekt jacocoTestReport
+#      - name: Upload test results
+#        uses: actions/upload-artifact@v1
+#        with:
+#          name: reports
+#          path: build/reports
+#
 #  sonarqube:
 #    name: SonarQube Check
 #    needs: tests
@@ -105,7 +105,7 @@ jobs:
         with:
           node-version: 13
       - name: Add plugin for conventional commits
-        run: npm install conventional-changelog-conventionalcommits @semantic-release/exec
+        run:  npm install conventional-changelog-conventionalcommits @semantic-release/exec
         working-directory: ./.github/workflows
       - name: Release to GitHub
         working-directory: ./.github/workflows
