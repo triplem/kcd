@@ -107,14 +107,13 @@ jobs:
       - name: Add plugin for conventional commits
         run: npm install conventional-changelog-conventionalcommits @semantic-release/exec
         working-directory: ./.github/workflows
-      - name: print variables
-        run: |
-          echo 'REV: $revnumber'
       - name: Release to GitHub
         working-directory: ./.github/workflows
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: npx semantic-release
+        run: |
+          npx semantic-release
+          echo 'REV: $revnumber'
 
   publish-docs:
     name: Publish Docs
