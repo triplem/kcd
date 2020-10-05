@@ -127,7 +127,9 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
       - name: Build package
-        run: ./gradlew asciidoctor
+        run: |
+          echo "ENV: $revnumber"
+          ./gradlew asciidoctor
       - name: Publish documentation
         uses: JamesIves/github-pages-deploy-action@3.6.2
         with:
