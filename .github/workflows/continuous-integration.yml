@@ -133,7 +133,6 @@ jobs:
         uses: actions/download-artifact@v1
         with:
           name: revnumber
-          path: revnumber.sh
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
       - name: Grant execute permission for revnumber
