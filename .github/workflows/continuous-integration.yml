@@ -109,14 +109,11 @@ jobs:
         working-directory: ./.github/workflows
       - name: Release to GitHub
         working-directory: ./.github/workflows
-        run: npx semantic-release
+        run: |
+          npx semantic-release
+          echo "revnumber=$revnumber" >> $GITHUB_ENV
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Upload revnumber results
-        uses: actions/upload-artifact@v1
-        with:
-          name: revnumber
-          path: revnumber.sh
 
   publish-docs:
     name: Publish Docs
@@ -129,23 +126,17 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 11
-      - name: Download revnumber
-        uses: actions/download-artifact@v1
-        with:
-          name: revnumber
       - name: Display structure of downloaded files
         run: ls -R
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
-      - name: Grant execute permission for revnumber
-        run: chmod +x revnumber/revnumber.sh
-      - name: Build package
+      - name: show variable
         run: |
-          revnumber/revnumber.sh
-          echo "ENV: $revnumber"
-          ./gradlew asciidoctor
+          echo "ENV: ${{ env.revnumber }}
+      - name: Build package
+        run: ./gradlew asciidoctor
       - name: Publish documentation
-        uses: JamesIves/github-pages-deploy-action@3.6.2
+        uses: JamesIves/github-pages-deploy
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           BRANCH: gh-pages
