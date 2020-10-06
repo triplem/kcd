@@ -133,6 +133,8 @@ jobs:
         uses: actions/download-artifact@v1
         with:
           name: revnumber
+      - name: Display structure of downloaded files
+        run: ls -R
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
       - name: Grant execute permission for revnumber
