@@ -113,6 +113,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Upload revnumber results
+        run: find -name revnumber.sh
+      - name: Upload revnumber results
         uses: actions/upload-artifact@v1
         with:
           name: revnumber
