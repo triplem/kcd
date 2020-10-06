@@ -85,6 +85,7 @@ jobs:
   release:
     name: Release
 #    needs: [sonarqube, security]
+    needs: compile
     if: github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
 
