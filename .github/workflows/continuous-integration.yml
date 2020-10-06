@@ -116,7 +116,7 @@ jobs:
         uses: actions/upload-artifact@v1
         with:
           name: revnumber
-          path: ${{ HOME }}/revnumber.sh
+          path: revnumber.sh
 
   publish-docs:
     name: Publish Docs
