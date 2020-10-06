@@ -138,10 +138,10 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
       - name: Grant execute permission for revnumber
-        run: chmod +x revnumber.sh
+        run: chmod +x revnumber/revnumber.sh
       - name: Build package
         run: |
-          ./revnumber.sh
+          revnumber/revnumber.sh
           echo "ENV: $revnumber"
           ./gradlew asciidoctor
       - name: Publish documentation
