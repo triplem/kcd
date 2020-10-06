@@ -111,10 +111,11 @@ jobs:
         working-directory: ./.github/workflows
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          revnumber: $revnumber
-        run: |
-          npx semantic-release
-          echo 'REV: $revnumber'
+      - name: Upload revnumber results
+        uses: actions/upload-artifact@v1
+        with:
+          name: revnumber
+          path: ../../revnumber.sh
 
   publish-docs:
     name: Publish Docs
@@ -127,10 +128,18 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 11
+      - name: Download revnumber
+        uses: actions/download-artifact@v1
+        with:
+          name: revnumber
+          path: revnumber.sh
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
+      - name: Grant execute permission for revnumber
+        run: chmod +x revnumber.sh
       - name: Build package
         run: |
+          ./revnumber.sh
           echo "ENV: $revnumber"
           ./gradlew asciidoctor
       - name: Publish documentation
