@@ -113,13 +113,10 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Upload revnumber results
-        run: |
-          echo "HOME: $HOME"
-      - name: Upload revnumber results
         uses: actions/upload-artifact@v1
         with:
           name: revnumber
-          path: revnumber.sh
+          path: ${{ HOME }}/revnumber.sh
 
   publish-docs:
     name: Publish Docs
