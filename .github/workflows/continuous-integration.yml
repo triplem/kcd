@@ -136,7 +136,7 @@ jobs:
       - name: Build package
         run: ./gradlew asciidoctor
       - name: Publish documentation
-        uses: JamesIves/github-pages-deploy
+        uses: JamesIves/github-pages-deploy-action@3.6.2
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           BRANCH: gh-pages
