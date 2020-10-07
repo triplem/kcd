@@ -134,6 +134,7 @@ jobs:
       - name: show variable
         run: |
           echo "ENV: ${{ env.revnumber }}"
+          echo "ENV: ${{ env }}"
       - name: Build package
         run: ./gradlew asciidoctor
       - name: Publish documentation
