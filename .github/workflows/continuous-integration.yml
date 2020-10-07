@@ -18,74 +18,73 @@ jobs:
     - name: Compile
       run: ./gradlew clean compileJava compileTestJava
 
-#  tests:
-#    name: Tests
-#    needs: compile
-#    runs-on: ubuntu-latest
-#
-#    steps:
-#      - uses: actions/checkout@v2
-#      - name: Set up JDK 11
-#        uses: actions/setup-java@v1
-#        with:
-#          java-version: 11
-#      - name: Grant execute permission for gradlew
-#        run: chmod +x gradlew
-#      - name: Run Tests
-#        run: ./gradlew clean test detekt jacocoTestReport
-#      - name: Upload test results
-#        uses: actions/upload-artifact@v1
-#        with:
-#          name: reports
-#          path: build/reports
-#
-#  sonarqube:
-#    name: SonarQube Check
-#    needs: tests
-#    runs-on: ubuntu-latest
-#
-#    steps:
-#    - uses: actions/checkout@v2
-#      with:
-#        fetch-depth: 0
-#    - name: Set up JDK 11
-#      uses: actions/setup-java@v1
-#      with:
-#        java-version: 11
-#    - name: Grant execute permission for gradlew
-#      run: chmod +x gradlew
-#    - name: Download test results
-#      uses: actions/download-artifact@v1
-#      with:
-#        name: reports
-#        path: build/reports
-#    - name: Sonarqube Check
-#      run: ./gradlew sonarqube -x test -x detekt
-#      env:
-#        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-#        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#
-#  security:
-#    name: Security Checks
-#    runs-on: ubuntu-latest
-#
-#    steps:
-#      - uses: actions/checkout@v2
-#        with:
-#          fetch-depth: 0
-#      - name: Set up JDK 11
-#        uses: actions/setup-java@v1
-#        with:
-#          java-version: 11
-#      - name: Grant execute permission for gradlew
-#        run: chmod +x gradlew
-#      - name: Check OWASP
-#        run: ./gradlew dependencyCheckAnalyze
+  tests:
+    name: Tests
+    needs: compile
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up JDK 11
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+      - name: Run Tests
+        run: ./gradlew clean test detekt jacocoTestReport
+      - name: Upload test results
+        uses: actions/upload-artifact@v1
+        with:
+          name: reports
+          path: build/reports
+
+  sonarqube:
+    name: SonarQube Check
+    needs: tests
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    - name: Set up JDK 11
+      uses: actions/setup-java@v1
+      with:
+        java-version: 11
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
+    - name: Download test results
+      uses: actions/download-artifact@v1
+      with:
+        name: reports
+        path: build/reports
+    - name: Sonarqube Check
+      run: ./gradlew sonarqube -x test -x detekt
+      env:
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  security:
+    name: Security Checks
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Set up JDK 11
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+      - name: Check OWASP
+        run: ./gradlew dependencyCheckAnalyze
 
   release:
     name: Release
-#    needs: [sonarqube, security]
-    needs: compile
+    needs: [sonarqube, security]
     if: github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
 
@@ -113,9 +112,6 @@ jobs:
         run: npx semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: show variable
-        run: |
-          echo "ENV: ${{ env.revnumber }}"
     outputs:
       revnumber: ${{ env.revnumber }}
 
@@ -134,13 +130,6 @@ jobs:
         run: ls -R
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
-      - name: show variable
-        run: |
-          echo "ENV: $revnumber"
-          echo "ENV: ${{ env.revnumber }}"
-          echo "ENV: ${{ needs.release.outputs.revnumber }}"
-        env:
-          revnumber: ${{ needs.release.outputs.revnumber }}
       - name: Build package
         run: ./gradlew asciidoctor
         env:
