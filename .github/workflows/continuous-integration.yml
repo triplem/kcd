@@ -116,6 +116,8 @@ jobs:
       - name: show variable
         run: |
           echo "ENV: ${{ env.revnumber }}"
+    outputs:
+      revnumber: ${{ env.revnumber }}
 
   publish-docs:
     name: Publish Docs
@@ -136,6 +138,7 @@ jobs:
         run: |
           echo "ENV: $revnumber"
           echo "ENV: ${{ env.revnumber }}"
+          echo "ENV: ${{ needs.release.outputs.revnumber }}"
         env:
           revnumber: ${{ env.revnumber }}
       - name: Build package
