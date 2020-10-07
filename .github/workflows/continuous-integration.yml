@@ -113,8 +113,14 @@ jobs:
         run: |
           npx semantic-release
           echo "revnumber=$revnumber" >> $GITHUB_ENV
+          echo "ENV1: $revnumber"
+          echo "ENV2: ${{ env.revnumber }}"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: show variable
+        run: |
+          echo "ENV: ${{ env.revnumber }}"
+          echo "ENV: ${{ env }}"
 
   publish-docs:
     name: Publish Docs
