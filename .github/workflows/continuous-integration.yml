@@ -140,9 +140,11 @@ jobs:
           echo "ENV: ${{ env.revnumber }}"
           echo "ENV: ${{ needs.release.outputs.revnumber }}"
         env:
-          revnumber: ${{ env.revnumber }}
+          revnumber: ${{ needs.release.outputs.revnumber }}
       - name: Build package
         run: ./gradlew asciidoctor
+        env:
+          revnumber: ${{ needs.release.outputs.revnumber }}
       - name: Publish documentation
         uses: JamesIves/github-pages-deploy-action@3.6.2
         with:
