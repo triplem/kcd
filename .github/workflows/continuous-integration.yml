@@ -136,7 +136,7 @@ jobs:
         run: |
           echo "ENV: $revnumber"
           echo "ENV: ${{ env.revnumber }}"
-        with:
+        env:
           revnumber: ${{ env.revnumber }}
       - name: Build package
         run: ./gradlew asciidoctor
