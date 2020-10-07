@@ -133,7 +133,7 @@ jobs:
         run: chmod +x gradlew
       - name: show variable
         run: |
-          echo "ENV: ${{ env.revnumber }}
+          echo "ENV: ${{ env.revnumber }}"
       - name: Build package
         run: ./gradlew asciidoctor
       - name: Publish documentation
