@@ -112,7 +112,6 @@ jobs:
         working-directory: ./.github/workflows
         run: |
           npx semantic-release
-          echo "revnumber=$revnumber" >> $GITHUB_ENV
           echo "ENV1: $revnumber"
           echo "ENV2: ${{ env.revnumber }}"
         env:
