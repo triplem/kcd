@@ -143,10 +143,10 @@ jobs:
           file: ./build/docker/Dockerfile
           push: true
           tags: |
-            ${{ env.GITHUB_REPOSITORY }}:latest
-            ${{ env.GITHUB_REPOSITORY }}:${{ needs.release.outputs.revnumber }}
-            ghcr.io/${{ env.GITHUB_REPOSITORY }}:latest
-            ghcr.io/${{ env.GITHUB_REPOSITORY }}:${{ needs.release.outputs.revnumber }}
+            triplem/kcd:latest
+            triplem/kcd:${{ needs.release.outputs.revnumber }}
+            ghcr.io/triplem/kcd:latest
+            ghcr.io/triplem/kcd:${{ needs.release.outputs.revnumber }}
 
   publish-docs:
     name: Publish Docs
