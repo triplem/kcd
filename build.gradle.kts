@@ -20,6 +20,7 @@ val ghToken = System.getenv()["GITHUB_TOKEN"] ?: ""
 
 val revDate = System.getenv()["revdate"] ?: SimpleDateFormat("yyyy-MM-dd").format(Date())
 val revNumber = System.getenv()["revnumber"] ?: "DEV-Version"
+val dockerTag = System.getenv()["revnumber"] ?: "latest"
 
 /**
  * Builds the dependency notation for the named Ktor [module] at the given [version].
@@ -35,7 +36,7 @@ plugins {
     kotlin("jvm") version "1.3.70"
     kotlin("plugin.serialization") version "1.3.70"
     application
-    id("com.bmuschko.docker-java-application") version "6.4.0"
+    id("com.bmuschko.docker-java-application") version "6.6.1"
     id("org.asciidoctor.jvm.convert") version "3.1.0"
     id("org.sonarqube") version "2.8"
     jacoco
@@ -63,6 +64,8 @@ docker {
             "-XX:MaxGCPauseMillis=100", "-XX:+UseStringDeduplication"))
         ports.set(listOf(8080))
         mainClassName.set(project.application.mainClassName)
+        images.set(listOf("${project.group}/${project.name}:latest",
+            "ghcr.io/${github_org}/${project.name}:${dockerTag}"))
     }
 }
 
