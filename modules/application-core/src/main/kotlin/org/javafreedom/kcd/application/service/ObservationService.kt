@@ -14,7 +14,6 @@ class ObservationService(
     private val deleteObservationPort: DeleteObservationPort,
     private val findObservationPort: FindObservationPort,
     private val saveObservationPort: SaveObservationPort,
-    private val validationOperation: ValidationOperation
 ) : DeleteObservationUseCase,
     LoadObservationUseCase, SaveObservationUseCase {
 
@@ -40,8 +39,6 @@ class ObservationService(
     }
 
     override suspend fun saveObservation(observation: Observation): UUID {
-
-
         return this.saveObservationPort.saveObservation(observation)
     }
 }
