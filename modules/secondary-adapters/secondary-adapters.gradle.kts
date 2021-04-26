@@ -4,12 +4,10 @@ val datastax_version: String by project
 val junit_version: String by project
 val kodein_version: String by project
 
-val kotlin_version: String by project
-
 plugins {
     id("org.javafreedom.kotlin-library-conventions")
 
-    kotlin("plugin.serialization") version "1.4.21"
+    kotlin("plugin.serialization") version "1.4.32"
     kotlin("kapt")
 }
 
@@ -30,10 +28,10 @@ dependencies {
 
     implementation("com.datastax.oss:java-driver-core:$datastax_version")
     implementation("com.datastax.oss:java-driver-query-builder:$datastax_version")
-    implementation("io.netty:netty-handler:4.1.46.Final")
-    implementation("org.apache.tinkerpop:gremlin-core:3.4.8")
-    implementation("org.apache.tinkerpop:gremlin-driver:3.4.8")
-    implementation("org.apache.tinkerpop:tinkergraph-gremlin:3.4.8")
+    implementation("io.netty:netty-handler:4.1.63.Final")
+    implementation("org.apache.tinkerpop:gremlin-core:3.4.10")
+    implementation("org.apache.tinkerpop:gremlin-driver:3.4.10")
+    implementation("org.apache.tinkerpop:tinkergraph-gremlin:3.4.10")
 
     testImplementation("com.willowtreeapps.assertk:assertk-jvm:0.23")
     testImplementation(kotlin("reflect"))

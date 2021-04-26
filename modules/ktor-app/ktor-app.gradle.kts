@@ -41,12 +41,13 @@ dependencies {
     testRuntimeOnly("co.elastic.logging:logback-ecs-encoder:0.4.0")
 
     // ktor platform
-    implementation(platform(ktor("bom:1.5.1")))
+    implementation(platform(ktor("bom:1.5.3")))
     implementation(ktor("server-cio"))
     implementation(ktor("server-core"))
     implementation(ktor("server-host-common"))
     implementation(ktor("auth"))
     implementation(ktor("auth-jwt"))
+    implementation("com.auth0:jwks-rsa:0.17.1")
     implementation(ktor("serialization"))
     implementation(ktor("locations"))
 
