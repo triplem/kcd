@@ -1,10 +1,10 @@
 import io.ktor.application.*
 import io.ktor.server.cio.*
 import io.ktor.server.engine.*
+import org.javafreedom.kcd.ktor.module
 import org.javafreedom.kcd.adapters.persistence.memory.memoryModule
 import org.javafreedom.kcd.ktor.baseDI
 import org.javafreedom.kcd.ktor.controllerDI
-import org.javafreedom.kcd.ktor.module
 import org.javafreedom.kcd.ktor.serviceModule
 import org.kodein.di.DI
 
@@ -14,19 +14,15 @@ class SpekApplication {
     var started: Boolean = false
 
     fun start() {
-        val configPath = ClassLoader.getSystemResource("application-acceptanceTest.conf").file
-        var appEnvironment = commandLineEnvironment(arrayOf("-config=$configPath"))
-
-        engine = embeddedServer(CIO, appEnvironment)
-        engine.addShutdownHook {
-            stop()
-        }
-
-        engine.start()
+        engine = embeddedServer(CIO, port = 8080, host = "localhost",
+            watchPaths = emptyList(),
+            module = Application::testModule)
 
         val disposable = engine.environment.monitor.subscribe(ApplicationStarted) {
             started = true
         }
+
+        engine.start().addShutdownHook { stop() }
 
         while (!started) {
             // the start method should not exit until server is started successfully
@@ -39,6 +35,10 @@ class SpekApplication {
     fun stop() {
         engine.stop(30, 50)
     }
+
+    private fun loadModule() {
+        engine.application.module(true, testDI)
+    }
 }
 
 val testDI = DI.Module("test-application") {
@@ -49,6 +49,6 @@ val testDI = DI.Module("test-application") {
     import(serviceModule)
 }
 
-fun Application.module(testing: Boolean = false) {
-    module(testing, testDI)
+fun Application.testModule() {
+    module(true, testDI)
 }
