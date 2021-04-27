@@ -1,7 +1,9 @@
 import assertk.assertThat
+import assertk.assertions.isEqualByComparingTo
 import assertk.assertions.isEqualTo
 import assertk.assertions.isEqualToIgnoringGivenProperties
 import assertk.assertions.isNotNull
+import assertk.assertions.isSameAs
 import assertk.assertions.prop
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
@@ -18,6 +20,8 @@ import org.javafreedom.kcd.adapters.rest.model.RequestObservation
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.gherkin.Feature
 import java.io.File
+import java.time.ZoneId
+import java.time.ZonedDateTime
 
 class ObservationSpek : Spek({
 
@@ -134,7 +138,14 @@ class ObservationSpek : Spek({
                         json.decodeFromString(responseBody)
 
                     assertThat(responseObject)
-                        .isEqualToIgnoringGivenProperties(expected.value, RestObservation::id)
+                        .isEqualToIgnoringGivenProperties(expected.value, RestObservation::id,
+                            RestObservation::dateOfObservation)
+
+                    val expectedDate = expected.value.dateOfObservation.toOffsetDateTime()
+                        .toZonedDateTime()
+
+                    assertThat(responseObject.dateOfObservation)
+                        .isEqualTo(expectedDate)
                 }
             }
         }
