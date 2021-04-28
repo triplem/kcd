@@ -141,11 +141,10 @@ class ObservationSpek : Spek({
                         .isEqualToIgnoringGivenProperties(expected.value, RestObservation::id,
                             RestObservation::dateOfObservation)
 
-                    val expectedDate = expected.value.dateOfObservation.toOffsetDateTime()
-                        .toZonedDateTime()
+                    val expectedDate = expected.value.dateOfObservation.withZoneSameInstant(ZoneId.of("UTC"))
+                    val resultDate = responseObject.dateOfObservation.withZoneSameInstant(ZoneId.of("UTC"))
 
-                    assertThat(responseObject.dateOfObservation)
-                        .isEqualTo(expectedDate)
+                    assertThat(resultDate).isEqualTo(expectedDate)
                 }
             }
         }
