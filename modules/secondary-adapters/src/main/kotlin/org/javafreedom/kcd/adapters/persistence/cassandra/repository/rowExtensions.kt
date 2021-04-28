@@ -5,7 +5,7 @@ import java.time.Instant
 import java.util.*
 
 fun Row.getUuidNonEmpty(name: String): UUID {
-    return this.getUuid(name)?.also { it } ?: throw InvalidIdException()
+    return this.getUuid(name) ?: throw InvalidIdException()
 }
 
 fun Row.getStringNonEmpty(name: String): String {
@@ -13,7 +13,7 @@ fun Row.getStringNonEmpty(name: String): String {
 }
 
 fun Row.getInstantNonEmpty(name: String): Instant {
-    return this.getInstant(name)?.let { it } ?: Instant.MIN
+    return this.getInstant(name) ?: Instant.MIN
 }
 
 class InvalidIdException : RuntimeException()

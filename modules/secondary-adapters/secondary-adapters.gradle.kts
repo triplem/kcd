@@ -34,6 +34,7 @@ dependencies {
     implementation("org.apache.tinkerpop:tinkergraph-gremlin:3.4.10")
 
     testImplementation("com.willowtreeapps.assertk:assertk-jvm:0.23")
+    testImplementation("io.mockk:mockk:1.10.0")
     testImplementation(kotlin("reflect"))
     testImplementation(kotlin("test"))
     testImplementation(kotlin("test-junit5"))
