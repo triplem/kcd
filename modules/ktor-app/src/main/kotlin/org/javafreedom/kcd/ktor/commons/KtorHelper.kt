@@ -10,4 +10,5 @@ class KtorHelper(val environment: ApplicationEnvironment) {
             else -> false
         }
     }
+
 }
