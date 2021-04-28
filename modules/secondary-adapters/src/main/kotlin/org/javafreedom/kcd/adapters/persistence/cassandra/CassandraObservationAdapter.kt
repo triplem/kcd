@@ -29,7 +29,7 @@ class CassandraObservationAdapter(val repo: ObservationRepository) : SaveObserva
         from: Instant,
         to: Instant
     ): List<Observation> {
-        return repo.find(user, from, to, null).observations.map { it.mapToDomain() }
+        return repo.find(user, from, to).observations.map { it.mapToDomain() }
     }
 
     override suspend fun findObservationsByTypeAndBetween(

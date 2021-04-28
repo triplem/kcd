@@ -18,7 +18,7 @@ class ObservationRepository(private val session: CqlSession) :
     suspend fun find(user: String, id: UUID): Observation {
         val statement = session.prepare("SELECT * FROM observation WHERE user = ? AND id = ?")
         val statementBuilder =
-            statement.boundStatementBuilder(user, id).setPageSize(SINGLE_PAGE_SIZE)
+            statement.boundStatementBuilder(user, id).setPageSize(1)
 
         return session.executeAsync(statementBuilder.build())
             .thenApplyAsync { ars ->
@@ -29,7 +29,7 @@ class ObservationRepository(private val session: CqlSession) :
             .await()
     }
 
-    suspend fun find(user: String, from: Instant, to: Instant, page: ByteBuffer?): ObservationList {
+    suspend fun find(user: String, from: Instant, to: Instant): ObservationList {
         val statement = session.prepare(
             "SELECT * FROM observation WHERE user = ? " +
                     "AND id > ? AND id < ?"
@@ -40,7 +40,7 @@ class ObservationRepository(private val session: CqlSession) :
 
         val statementBuilder = statement.boundStatementBuilder(user, fromUuid, toUuid)
 
-        return find(statementBuilder, page)
+        return find(statementBuilder)
     }
 
     suspend fun find(
@@ -60,10 +60,10 @@ class ObservationRepository(private val session: CqlSession) :
 
         val statementBuilder = statement.boundStatementBuilder(user, type, fromUuid, toUuid)
 
-        return find(statementBuilder, page)
+        return find(statementBuilder)
     }
 
-    suspend fun find(statementBuilder: BoundStatementBuilder, page: ByteBuffer?): ObservationList {
+    suspend fun find(statementBuilder: BoundStatementBuilder): ObservationList {
         return find(statementBuilder) { map(it) }
     }
 

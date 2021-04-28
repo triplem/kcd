@@ -79,7 +79,7 @@ class ObservationRepositoryTest : RepositoryTest<ObservationRepository>() {
 
                 val from = entryDate.minus(1, ChronoUnit.MINUTES)
                 val to = entryDate.plus(1, ChronoUnit.MINUTES)
-                val dpsByUserAndTimeframe = getSut().find("user", from, to, null)
+                val dpsByUserAndTimeframe = getSut().find("user", from, to)
                 assertThat(dpsByUserAndTimeframe.observations).contains(observation)
             } catch (e: NoNodeAvailableException) {
                 assertTrue(false)
