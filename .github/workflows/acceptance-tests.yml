@@ -1,10 +1,13 @@
 name: KCD Acceptance Tests
 
+on: [push]
+
 env:
   CARGO_TERM_COLOR: always
 
 jobs:
   test:
+    if: ${{ false }}  # disable for now
     runs-on: ubuntu-latest
     services:
       cassandra:
