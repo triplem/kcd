@@ -6,8 +6,6 @@ import assertk.assertThat
 import assertk.assertions.contains
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNotNull
-import assertk.assertions.isSuccess
-import io.ktor.application.*
 import io.ktor.config.*
 import io.ktor.http.*
 import io.ktor.server.testing.*
@@ -16,7 +14,11 @@ import kotlinx.serialization.UseSerializers
 import kotlinx.serialization.json.Json
 import mu.KotlinLogging
 import org.javafreedom.kcd.adapters.persistence.memory.memoryModule
-import org.javafreedom.kcd.adapters.rest.model.*
+import org.javafreedom.kcd.adapters.rest.model.Component
+import org.javafreedom.kcd.adapters.rest.model.Element
+import org.javafreedom.kcd.adapters.rest.model.Observation
+import org.javafreedom.kcd.adapters.rest.model.Quantity
+import org.javafreedom.kcd.adapters.rest.model.RequestObservation
 import org.javafreedom.kcd.ktor.baseDI
 import org.javafreedom.kcd.ktor.commons.ZonedDateTimeSerializer
 import org.javafreedom.kcd.ktor.controllerDI
@@ -77,8 +79,8 @@ class ApplicationTest {
                 addHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
                 setBody("\"wrong\":10000")
             }.apply {
-                assertThat { response.status() }.isSuccess().isEqualTo(HttpStatusCode.BadRequest)
-                assertThat { response.content }.isSuccess().isNotNull()
+                assertThat(response.status()).isEqualTo(HttpStatusCode.BadRequest)
+                assertThat(response.content).isNotNull()
                     .contains("Unexpected JSON token at offset 0: Expected")
             }
         }
@@ -126,26 +128,6 @@ class ApplicationTest {
             "BloodSugar", Component("BloodSugar", "comment", listOf(element))
         )
         return RequestObservation(bsValue)
-    }
-
-    private fun generateBpRestData(): RequestObservation {
-        val systolic = Element(
-            "Systolic", "comment", Quantity("mmHg", 120),
-            "device", "extension"
-        )
-        val diastolic = Element(
-            "Systolic", "comment", Quantity("mmHg", 80),
-            "device", "extension"
-        )
-
-        val bpValue = Observation(
-            null, ZonedDateTime.now(),
-            "BloodPressure", Component(
-                "BloodPressure", "comment",
-                listOf(systolic, diastolic)
-            )
-        )
-        return RequestObservation(bpValue)
     }
 
     @Test

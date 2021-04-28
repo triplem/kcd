@@ -46,7 +46,6 @@ subprojects {
                 property("sonar.sources", "src/main")
                 property("sonar.kotlin.detekt.reportPaths", reportsDir)
                 property("sonar.tests", testDirs)
-
             }
         }
 
