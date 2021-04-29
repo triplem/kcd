@@ -89,8 +89,13 @@ internal class CassandraObservationAdapterTest {
 
     private fun createPersistenceObservation(): org.javafreedom.kcd.adapters.persistence.cassandra.model.Observation {
         return org.javafreedom.kcd.adapters.persistence.cassandra.model.Observation(
-            "user", UUID.randomUUID(), "type",
-            Instant.now(), Instant.now(), Instant.now(), "data"
+            "user",
+            UUID.randomUUID(),
+            "type",
+            Instant.now(),
+            Instant.now(),
+            Instant.now(),
+            "{\"element\":{\"type\":\"type\",\"comment\":\"element\",\"quantity\":{\"unit\":\"unit\",\"amount\":{\"type\":\"Int\",\"value\":100}},\"device\":\"device\",\"extension\":\"extension\"},\"component\":{\"type\":\"type\",\"comment\":\"component\",\"elements\":[{\"type\":\"type\",\"comment\":\"nestedElement1\",\"quantity\":{\"unit\":\"unit\",\"amount\":{\"type\":\"Double\",\"value\":100.0}},\"device\":\"device\",\"extension\":\"extension\"},{\"type\":\"type\",\"comment\":\"nestedElement2\",\"quantity\":{\"unit\":\"unit\",\"amount\":{\"type\":\"Int\",\"value\":10}},\"device\":\"device\",\"extension\":\"extension\"}]}}"
         )
     }
 
