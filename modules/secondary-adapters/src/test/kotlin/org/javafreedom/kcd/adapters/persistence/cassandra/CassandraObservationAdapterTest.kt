@@ -13,6 +13,7 @@ import io.mockk.just
 import io.mockk.runs
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
+import org.javafreedom.kcd.adapters.persistence.cassandra.model.ObservationList
 import org.javafreedom.kcd.adapters.persistence.cassandra.repository.NoDataForQueryFound
 import org.javafreedom.kcd.adapters.persistence.cassandra.repository.ObservationRepository
 import org.javafreedom.kcd.domain.model.Element
@@ -62,6 +63,45 @@ internal class CassandraObservationAdapterTest {
             assertThat {
                 sut.findObservation("user", UUID.randomUUID())
             }.isFailure().isInstanceOf(NoDataForQueryFound::class)
+        }
+    }
+
+    @Test
+    fun findObservationsBetween() {
+        val repoObservation = createPersistenceObservation()
+        coEvery { repository.find(any(), any(), any()) } returns ObservationList(
+            listOf(
+                repoObservation
+            ), null
+        )
+        val sut = CassandraObservationAdapter(repository)
+
+        runBlockingTest {
+            assertThat(
+                sut
+                    .findObservationsBetween("user", Instant.now(), Instant.now())
+            ).isNotNull()
+        }
+    }
+
+    @Test
+    fun findObservationsByTypeAndBetween() {
+        val repoObservation = createPersistenceObservation()
+        coEvery { repository.find(any(), any(), any(), any()) } returns ObservationList(
+            listOf(
+                repoObservation
+            ), null
+        )
+        val sut = CassandraObservationAdapter(repository)
+
+        runBlockingTest {
+            assertThat(
+                sut
+                    .findObservationsByTypeAndBetween(
+                        "user", "type", Instant.now(),
+                        Instant.now()
+                    )
+            ).isNotNull()
         }
     }
 
