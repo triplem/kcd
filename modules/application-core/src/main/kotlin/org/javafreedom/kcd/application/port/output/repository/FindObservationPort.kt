@@ -49,8 +49,8 @@ interface FindObservationPort {
      * @throws ObservationNotFoundException if Observation is not found using the given user
      */
     suspend fun findObservationsByTypeAndBetween(
-        user: String, type: String, observationTimeFrom: Instant,
-        observationTimeTo: Instant
+        user: String, type: String, from: Instant,
+        to: Instant
     ): List<Observation>
 
 }

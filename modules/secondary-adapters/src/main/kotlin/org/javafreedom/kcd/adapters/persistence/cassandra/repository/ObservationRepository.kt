@@ -8,7 +8,6 @@ import com.datastax.oss.driver.api.core.uuid.Uuids
 import kotlinx.coroutines.future.await
 import org.javafreedom.kcd.adapters.persistence.cassandra.model.Observation
 import org.javafreedom.kcd.adapters.persistence.cassandra.model.ObservationList
-import java.nio.ByteBuffer
 import java.time.Instant
 import java.util.*
 
@@ -18,7 +17,7 @@ class ObservationRepository(private val session: CqlSession) :
     suspend fun find(user: String, id: UUID): Observation {
         val statement = session.prepare("SELECT * FROM observation WHERE user = ? AND id = ?")
         val statementBuilder =
-            statement.boundStatementBuilder(user, id).setPageSize(SINGLE_PAGE_SIZE)
+            statement.boundStatementBuilder(user, id).setPageSize(1)
 
         return session.executeAsync(statementBuilder.build())
             .thenApplyAsync { ars ->
@@ -29,7 +28,7 @@ class ObservationRepository(private val session: CqlSession) :
             .await()
     }
 
-    suspend fun find(user: String, from: Instant, to: Instant, page: ByteBuffer?): ObservationList {
+    suspend fun find(user: String, from: Instant, to: Instant): ObservationList {
         val statement = session.prepare(
             "SELECT * FROM observation WHERE user = ? " +
                     "AND id > ? AND id < ?"
@@ -40,15 +39,14 @@ class ObservationRepository(private val session: CqlSession) :
 
         val statementBuilder = statement.boundStatementBuilder(user, fromUuid, toUuid)
 
-        return find(statementBuilder, page)
+        return find(statementBuilder)
     }
 
     suspend fun find(
         user: String,
         type: String,
         from: Instant,
-        to: Instant,
-        page: ByteBuffer?
+        to: Instant
     ): ObservationList {
         val statement = session.prepare(
             "SELECT * FROM observation_by_type WHERE user = ? " +
@@ -60,18 +58,21 @@ class ObservationRepository(private val session: CqlSession) :
 
         val statementBuilder = statement.boundStatementBuilder(user, type, fromUuid, toUuid)
 
-        return find(statementBuilder, page)
+        return find(statementBuilder)
     }
 
-    suspend fun find(statementBuilder: BoundStatementBuilder, page: ByteBuffer?): ObservationList {
+    private suspend fun find(statementBuilder: BoundStatementBuilder): ObservationList {
         return find(statementBuilder) { map(it) }
     }
 
-    suspend fun delete(user: String, id: UUID) {
-        val statement = session.prepare("DELETE FROM observation WHERE user = ? AND id = ?")
+    suspend fun delete(user: String, id: UUID): Boolean {
+        val statement =
+            session.prepare("DELETE FROM observation WHERE user = ? AND id = ? IF EXISTS")
         val statementBuilder = statement.boundStatementBuilder(user, id)
 
-        session.executeAsync(statementBuilder.build()).await()
+        return session.executeAsync(statementBuilder.build()).thenApplyAsync {
+            it.one()?.getBoolean("[applied]") ?: false
+        }.await()
     }
 
     suspend fun upsert(observation: Observation) {

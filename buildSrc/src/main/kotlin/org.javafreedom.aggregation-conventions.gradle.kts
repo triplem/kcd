@@ -32,14 +32,6 @@ val aggregateDetektTask = tasks.register<Detekt>("aggregateDetekt") {
 }
 
 subprojects {
-    tasks.register("debug") {
-        val sonarTestSources = mutableListOf<String>()
-        sonarTestSources.add("src/testIntegration")
-        sonarTestSources.add("src/test")
-        val testDirs =
-            sonarTestSources.filter { this.project.projectDir.resolve(it).exists() }.joinToString()
-    }
-
     if (!this.projectDir.parent.endsWith("documentation")) {
         val reportsDir = this.buildDir.resolve("reports/detekt/detekt.xml").absolutePath
         val baseDir = this.projectDir
