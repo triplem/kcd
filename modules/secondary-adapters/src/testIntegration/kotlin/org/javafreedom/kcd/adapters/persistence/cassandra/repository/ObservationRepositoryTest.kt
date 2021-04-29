@@ -88,6 +88,8 @@ class ObservationRepositoryTest : RepositoryTest<ObservationRepository>() {
                 val dpsByUserAndTimeframe = getSut().find("user", from, to)
                 dpsByUserAndTimeframe.observations
             }.isSuccess().contains(observation)
+
+            getSut().delete("user", id)
         }
     }
 
@@ -113,6 +115,8 @@ class ObservationRepositoryTest : RepositoryTest<ObservationRepository>() {
                     entryDate.plusSeconds(1200)
                 )
             }.isSuccess().isEqualTo(expected)
+
+            getSut().delete("user", id)
         }
     }
 
@@ -138,6 +142,8 @@ class ObservationRepositoryTest : RepositoryTest<ObservationRepository>() {
                     entryDate.plusSeconds(1200)
                 )
             }.isSuccess().isEqualTo(expected)
+
+            getSut().delete("user", id)
         }
     }
 

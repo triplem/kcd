@@ -34,7 +34,7 @@ internal class CassandraObservationAdapterTest {
 
     @Test
     fun deleteObservation() {
-        coEvery { repository.delete(any(), any()) } just runs
+        coEvery { repository.delete(any(), any()) } returns true
         val sut = CassandraObservationAdapter(repository)
 
         runBlockingTest {
