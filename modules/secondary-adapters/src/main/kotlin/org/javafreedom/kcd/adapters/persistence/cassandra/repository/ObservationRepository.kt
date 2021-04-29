@@ -8,7 +8,6 @@ import com.datastax.oss.driver.api.core.uuid.Uuids
 import kotlinx.coroutines.future.await
 import org.javafreedom.kcd.adapters.persistence.cassandra.model.Observation
 import org.javafreedom.kcd.adapters.persistence.cassandra.model.ObservationList
-import java.nio.ByteBuffer
 import java.time.Instant
 import java.util.*
 
@@ -47,8 +46,7 @@ class ObservationRepository(private val session: CqlSession) :
         user: String,
         type: String,
         from: Instant,
-        to: Instant,
-        page: ByteBuffer?
+        to: Instant
     ): ObservationList {
         val statement = session.prepare(
             "SELECT * FROM observation_by_type WHERE user = ? " +
@@ -63,7 +61,7 @@ class ObservationRepository(private val session: CqlSession) :
         return find(statementBuilder)
     }
 
-    suspend fun find(statementBuilder: BoundStatementBuilder): ObservationList {
+    private suspend fun find(statementBuilder: BoundStatementBuilder): ObservationList {
         return find(statementBuilder) { map(it) }
     }
 

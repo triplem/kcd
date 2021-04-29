@@ -12,7 +12,7 @@ import org.javafreedom.kcd.domain.model.Observation
 import java.time.Instant
 import java.util.*
 
-class CassandraObservationAdapter(val repo: ObservationRepository) : SaveObservationPort,
+class CassandraObservationAdapter(private val repo: ObservationRepository) : SaveObservationPort,
     DeleteObservationPort, FindObservationPort, HealthIndicator {
 
     override suspend fun deleteObservation(user: String, uuid: UUID): Boolean {
@@ -38,7 +38,7 @@ class CassandraObservationAdapter(val repo: ObservationRepository) : SaveObserva
         from: Instant,
         to: Instant
     ): List<Observation> {
-        return repo.find(user, type, from, to, null).observations.map { it.mapToDomain() }
+        return repo.find(user, type, from, to).observations.map { it.mapToDomain() }
     }
 
     override suspend fun saveObservation(observation: Observation): UUID {
