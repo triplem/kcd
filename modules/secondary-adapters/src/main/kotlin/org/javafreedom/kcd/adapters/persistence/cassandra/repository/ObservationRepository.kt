@@ -65,11 +65,14 @@ class ObservationRepository(private val session: CqlSession) :
         return find(statementBuilder) { map(it) }
     }
 
-    suspend fun delete(user: String, id: UUID) {
-        val statement = session.prepare("DELETE FROM observation WHERE user = ? AND id = ?")
+    suspend fun delete(user: String, id: UUID): Boolean {
+        val statement =
+            session.prepare("DELETE FROM observation WHERE user = ? AND id = ? IF EXISTS")
         val statementBuilder = statement.boundStatementBuilder(user, id)
 
-        session.executeAsync(statementBuilder.build()).await()
+        return session.executeAsync(statementBuilder.build()).thenApplyAsync {
+            it.one()?.getBoolean("[applied]") ?: false
+        }.await()
     }
 
     suspend fun upsert(observation: Observation) {
