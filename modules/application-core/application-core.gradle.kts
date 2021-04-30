@@ -11,9 +11,10 @@ dependencies {
     implementation("io.github.microutils:kotlin-logging:${klogging_version}")
     implementation("org.valiktor:valiktor-core:${valiktor_version}")
 
+    testImplementation("com.willowtreeapps.assertk:assertk-jvm:0.23")
+    testImplementation("io.mockk:mockk:1.10.5")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.4.3")
 
-//    functionalTestImplementation("com.willowtreeapps.assertk:assertk-jvm:0.23")
-//    functionalTestImplementation("io.mockk:mockk:1.10.5")
 //    functionalTestImplementation("io.cucumber:cucumber-java:${cucumber_version}")
 //    functionalTestImplementation("io.cucumber:cucumber-junit-platform-engine:${cucumber_version}")
 //    functionalTestImplementation("io.cucumber:cucumber-picocontainer:${cucumber_version}")

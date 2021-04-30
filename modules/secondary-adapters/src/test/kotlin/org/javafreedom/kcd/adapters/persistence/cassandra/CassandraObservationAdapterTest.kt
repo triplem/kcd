@@ -26,7 +26,7 @@ import org.junit.jupiter.api.extension.ExtendWith
 import java.time.Instant
 import java.util.*
 
-@ExperimentalCoroutinesApi
+@OptIn(ExperimentalCoroutinesApi::class)
 @ExtendWith(MockKExtension::class)
 internal class CassandraObservationAdapterTest {
 

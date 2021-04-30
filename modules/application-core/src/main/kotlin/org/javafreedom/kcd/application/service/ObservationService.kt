@@ -13,7 +13,7 @@ import java.util.*
 class ObservationService(
     private val deleteObservationPort: DeleteObservationPort,
     private val findObservationPort: FindObservationPort,
-    private val saveObservationPort: SaveObservationPort,
+    private val saveObservationPort: SaveObservationPort
 ) : DeleteObservationUseCase,
     LoadObservationUseCase, SaveObservationUseCase {
 
