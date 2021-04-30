@@ -1,5 +1,6 @@
 package org.javafreedom.kcd.adapters.persistence.cassandra.mapper
 
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.InternalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializer
@@ -18,7 +19,7 @@ import kotlinx.serialization.json.jsonPrimitive
 import kotlinx.serialization.json.put
 
 @Serializer(forClass = Number::class)
-@OptIn(InternalSerializationApi::class)
+@OptIn(InternalSerializationApi::class, ExperimentalSerializationApi::class)
 object NumberSerializer : KSerializer<Number> {
     private const val KEY_TYPE = "type"
     private const val KEY_VALUE = "value"
