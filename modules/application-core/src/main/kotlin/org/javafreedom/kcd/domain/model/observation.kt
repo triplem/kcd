@@ -36,7 +36,6 @@ data class Component(
 /**
  * represents a measurement taken on the date
  */
-// TODO add type to observation, it is a required parameter
 data class Observation(
     val id: UUID? = null, val date: Instant, val audit: EmbeddedAudit,
     val valid: Boolean = true, val element: Element?,

@@ -1,7 +1,7 @@
 package org.javafreedom.kcd.adapters.rest.model
 
 import kotlinx.serialization.Serializable
-import org.javafreedom.kcd.adapters.persistence.cassandra.mapper.NumberSerializer // TODO should not be used in here
+import org.javafreedom.kcd.adapters.persistence.cassandra.mapper.NumberSerializer
 import org.javafreedom.kcd.ktor.commons.UUIDSerializer
 import org.javafreedom.kcd.ktor.commons.ZonedDateTimeSerializer
 import java.time.ZonedDateTime

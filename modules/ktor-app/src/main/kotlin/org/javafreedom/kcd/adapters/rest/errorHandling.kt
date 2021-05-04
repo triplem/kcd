@@ -3,18 +3,14 @@ package org.javafreedom.kcd.adapters.rest
 
 import io.ktor.application.*
 import io.ktor.features.*
-import io.ktor.features.ContentTransformationException
 import io.ktor.http.*
 import io.ktor.request.*
 import io.ktor.response.*
 import kotlinx.serialization.UseSerializers
 import mu.KotlinLogging
-import org.javafreedom.kcd.adapters.rest.model.AuthenticationException
-import org.javafreedom.kcd.adapters.rest.model.AuthorizationException
 import org.javafreedom.kcd.adapters.rest.model.Failure
 import org.javafreedom.kcd.adapters.rest.model.HttpException
 import org.javafreedom.kcd.adapters.rest.model.MappingException
-import org.javafreedom.kcd.domain.model.BusinessException
 import org.javafreedom.kcd.ktor.commons.KtorHelper
 import org.javafreedom.kcd.ktor.commons.ZonedDateTimeSerializer
 
@@ -25,21 +21,9 @@ fun Application.statusPagesFeature() {
     val isProduction = ktorHelper.isProduction()
 
     install(StatusPages) {
-        exception<AuthenticationException> { e ->
-            logger.error(e) { "error" }
-            call.respond(HttpStatusCode.Unauthorized, constructFailure(isProduction, context, e))
-        }
-        exception<AuthorizationException> { e ->
-            logger.error(e) { "error" }
-            call.respond(HttpStatusCode.Forbidden)
-        }
         exception<IllegalArgumentException> { e ->
             logger.error(e) { "error" }
             call.respond(HttpStatusCode.BadRequest, constructFailure(isProduction, context, e))
-        }
-        exception<ContentTransformationException> { e ->
-            logger.error(e) { "error" }
-            call.respond(HttpStatusCode.BadRequest)
         }
         exception<MappingException> { e ->
             logger.error(e) { "error" }
@@ -48,10 +32,6 @@ fun Application.statusPagesFeature() {
         exception<HttpException> { e ->
             logger.error(e) { e.description }
             call.respond(e.code)
-        }
-        exception<Exception> { e ->
-            logger.error(e) { "error" }
-            call.respond(HttpStatusCode.BadRequest)
         }
     }
 }
