@@ -28,13 +28,4 @@ fun Application.restFeatures() {
         callIdMdc(HttpHeaders.XCorrelationId)
     }
 
-//    install(Health) {
-//        val healthIndicators by di().allInstances<HealthIndicator>()
-//        healthIndicators.forEach {
-//            var readyPair = it.isReady()
-//            readyCheck(readyPair.first) {
-//                readyPair.second
-//            }
-//        }
-//    }
 }
