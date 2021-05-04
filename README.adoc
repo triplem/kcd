@@ -20,11 +20,17 @@ https://www.asyncapi.com/blog/automated-releases-part-two/
 https://semantic-release.gitbook.io/semantic-release/
 
 sources of wisdom:
+
 https://github.com/appmattus/kotlinfixture/blob/main/owaspDependencyCheck.gradle.kts
+
 https://github.com/dustinsand/hex-arch-kotlin-spring-boot/tree/master/voter-application-core/src/main/java/com/hexarchbootdemo
+
 https://www.oreilly.com/content/cassandra-data-modeling/
+
 https://docs.gradle.org/current/samples/sample_convention_plugins.html
 
 Tools used:
+
 https://k3d.io/
+
 https://github.com/willowtreeapps/assertk
