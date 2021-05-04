@@ -6,11 +6,7 @@ import io.ktor.application.*
 import io.ktor.features.*
 import io.ktor.http.*
 import kotlinx.serialization.UseSerializers
-import ktor_health_check.Health
-import org.javafreedom.kcd.application.common.HealthIndicator
 import org.javafreedom.kcd.ktor.commons.ZonedDateTimeSerializer
-import org.kodein.di.allInstances
-import org.kodein.di.ktor.di
 import java.util.*
 
 fun Application.restFeatures() {
@@ -32,13 +28,4 @@ fun Application.restFeatures() {
         callIdMdc(HttpHeaders.XCorrelationId)
     }
 
-    install(Health) {
-        val healthIndicators by di().allInstances<HealthIndicator>()
-        healthIndicators.forEach {
-            var readyPair = it.isReady()
-            readyCheck(readyPair.first) {
-                readyPair.second
-            }
-        }
-    }
 }

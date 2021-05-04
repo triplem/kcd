@@ -14,8 +14,6 @@ import java.time.Instant
 import java.time.ZoneId
 import java.util.*
 
-// TODO datamodel is not yet "finalized" - eg type and comment
-// we do need to store the timezone as well (timezoneddate vs instant)
 fun Observation.mapToDomain(user: String, uuid: UUID?): DomainObservation {
 
     this.dateOfObservation.zone
@@ -30,7 +28,7 @@ fun Observation.mapToDomain(user: String, uuid: UUID?): DomainObservation {
         component = this.component.mapToDomain()
     }
 
-    val id = this.id ?: uuid ?: UUID.randomUUID() // TODO this one really necessary/correct???
+    val id = this.id ?: uuid ?: UUID.randomUUID()
 
     return DomainObservation(
         id, dateOfObservation.toInstant(),

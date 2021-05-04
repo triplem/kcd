@@ -21,9 +21,9 @@ plugins {
     jacoco
 }
 
-repositories {
-    maven { url = uri("https://jitpack.io") }
-}
+//repositories {
+//    maven { url = uri("https://jitpack.io") }
+//}
 
 dependencies {
     implementation(project(":application-core"))
@@ -57,7 +57,7 @@ dependencies {
     implementation("org.kodein.di:kodein-di-framework-ktor-server-controller-jvm:$kodein_version")
 
     // test and integration test
-    implementation("com.github.zensum:ktor-health-check:011a5a8")
+//    implementation("com.github.zensum:ktor-health-check:011a5a8")
     testImplementation("io.mockk:mockk:1.10.0")
     testImplementation(kotlin("test"))
     testImplementation(kotlin("test-junit5"))

@@ -6,7 +6,6 @@ import assertk.assertThat
 import assertk.assertions.contains
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNotNull
-import io.ktor.config.*
 import io.ktor.http.*
 import io.ktor.server.testing.*
 import kotlinx.serialization.Serializable
@@ -47,13 +46,6 @@ class ApplicationTest {
     @Test
     fun testRoot() {
         withTestApplication({
-            (environment.config as MapApplicationConfig).apply {
-                // Set here the properties
-                put("jwt.domain", "03e156f6058a13813816065")
-                put("jwt.audience", "test")
-                put("jwt.realm", "test")
-                put("jwt.secret", "test")
-            }
             module(true, testDI)
         }) {
             handleRequest(HttpMethod.Get, "/").apply {
@@ -66,13 +58,6 @@ class ApplicationTest {
     @Test
     fun testObservation_NOk_wrongJson() {
         withTestApplication({
-            (environment.config as MapApplicationConfig).apply {
-                // Set here the properties
-                put("jwt.domain", "03e156f6058a13813816065")
-                put("jwt.audience", "test")
-                put("jwt.realm", "test")
-                put("jwt.secret", "test")
-            }
             module(true, testDI)
         }) {
             handleRequest(HttpMethod.Post, "/observation") {
@@ -87,15 +72,22 @@ class ApplicationTest {
     }
 
     @Test
+    fun testObservation_NOk_wrongType() {
+        withTestApplication({
+            module(true, testDI)
+        }) {
+            handleRequest(HttpMethod.Post, "/observation") {
+                addHeader(HttpHeaders.ContentType, ContentType.Application.Xml.toString())
+            }.apply {
+                assertThat(response.status()).isEqualTo(HttpStatusCode.UnsupportedMediaType)
+            }
+        }
+    }
+
+
+    @Test
     fun testObservation_Ok() {
         withTestApplication({
-            (environment.config as MapApplicationConfig).apply {
-                // Set here the properties
-                put("jwt.domain", "03e156f6058a13813816065")
-                put("jwt.audience", "test")
-                put("jwt.realm", "test")
-                put("jwt.secret", "test")
-            }
             module(true, testDI)
         }) {
             handleRequest(HttpMethod.Post, "/observation") {
