@@ -8,7 +8,6 @@ import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.SerializationException
 import mu.KotlinLogging
 import org.javafreedom.kcd.adapters.rest.mapper.mapToDomain
 import org.javafreedom.kcd.adapters.rest.mapper.mapToRest
@@ -53,19 +52,13 @@ class ObservationController(application: Application) : AbstractDIController(app
             logger.debug { "call.authentication: ${call.authentication}" }
             logger.debug { "principal: $principal" }
 
-            try {
-                logger.debug { "id: '${param.observationId}'" }
+            logger.debug { "id: '${param.observationId}'" }
 
-                val domainObservation = loadObservationUseCase
-                    .loadObservation("user", UUID.fromString(param.observationId))
-                val requestObservation = domainObservation.mapToRest()
+            val domainObservation = loadObservationUseCase
+                .loadObservation("user", UUID.fromString(param.observationId))
+            val requestObservation = domainObservation.mapToRest()
 
-                call.respond(HttpStatusCode.OK, requestObservation)
-
-            } catch (cause: SerializationException) {
-                throw IllegalArgumentException(cause.message)
-            }
-
+            call.respond(HttpStatusCode.OK, requestObservation)
         }
     }
 }

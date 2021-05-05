@@ -1,9 +1,7 @@
 import assertk.assertThat
-import assertk.assertions.isEqualByComparingTo
 import assertk.assertions.isEqualTo
 import assertk.assertions.isEqualToIgnoringGivenProperties
 import assertk.assertions.isNotNull
-import assertk.assertions.isSameAs
 import assertk.assertions.prop
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
@@ -21,7 +19,6 @@ import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.gherkin.Feature
 import java.io.File
 import java.time.ZoneId
-import java.time.ZonedDateTime
 
 class ObservationSpek : Spek({
 
@@ -39,7 +36,6 @@ class ObservationSpek : Spek({
 
     Feature("create and reload observation") {
         lateinit var call: Call
-        lateinit var observationId: String
 
         Scenario("creating the observation") {
             When("using 'post'") {
@@ -89,7 +85,7 @@ class ObservationSpek : Spek({
         }
 
         Scenario("retrieve observation") {
-            var uuid: String = ""
+            var uuid = ""
 
             When("creating a observation 'post'") {
                 val observationJson =
@@ -138,16 +134,49 @@ class ObservationSpek : Spek({
                         json.decodeFromString(responseBody)
 
                     assertThat(responseObject)
-                        .isEqualToIgnoringGivenProperties(expected.value, RestObservation::id,
-                            RestObservation::dateOfObservation)
+                        .isEqualToIgnoringGivenProperties(
+                            expected.value, RestObservation::id,
+                            RestObservation::dateOfObservation
+                        )
 
-                    val expectedDate = expected.value.dateOfObservation.withZoneSameInstant(ZoneId.of("UTC"))
-                    val resultDate = responseObject.dateOfObservation.withZoneSameInstant(ZoneId.of("UTC"))
+                    val expectedDate =
+                        expected.value.dateOfObservation.withZoneSameInstant(ZoneId.of("UTC"))
+                    val resultDate =
+                        responseObject.dateOfObservation.withZoneSameInstant(ZoneId.of("UTC"))
 
                     assertThat(resultDate).isEqualTo(expectedDate)
                 }
             }
         }
+
+        Scenario("retrieve not existing") {
+            val uuid = ""
+
+            When("no observation is created") {
+            }
+
+            Then("an exception is thrown") {
+                val getUrl = "$url/$uuid"
+
+                println("getUrl: '$getUrl'")
+
+                val request = Request.Builder().url(getUrl).get().build()
+                call = client.newCall(request)
+
+                val response = call.execute()
+
+                response.use { result ->
+                    assertThat(result)
+                        .prop(Response::code)
+                        .isEqualTo(404)
+
+                    val responseBody = result.body?.string() ?: ""
+
+                    assertThat(responseBody).isEqualTo("")
+                }
+            }
+        }
+
     }
 })
 
