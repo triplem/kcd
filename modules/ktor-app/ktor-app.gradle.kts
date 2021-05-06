@@ -1,8 +1,15 @@
 description = "ktor-app"
 
-val kodein_version: String by project
-val junit_version: String by project
-val spek_version: String by project
+val kodeinVersion: String by project
+val junitVersion: String by project
+val spekVersion: String by project
+val kotlinCoroutinesVersion: String by project
+val logbackVersion: String by project
+val kotlinxSerializationVersion: String by project
+val mockkVersion: String by project
+val assertkVersion: String by project
+val uuidCreatorVersion: String by project
+val kloggingVersion: String by project
 
 /**
  * Builds the dependency notation for the named Ktor [module] at the given [version].
@@ -17,7 +24,7 @@ plugins {
     id("org.javafreedom.kotlin-application-conventions")
 
     kotlin("jvm")
-    kotlin("plugin.serialization") version "1.4.30"
+    kotlin("plugin.serialization")
     jacoco
 }
 
@@ -29,15 +36,15 @@ dependencies {
     implementation(project(":application-core"))
     implementation(project(":secondary-adapters"))
 
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.3")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.4.3")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinCoroutinesVersion")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:$kotlinCoroutinesVersion")
 
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.0.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$kotlinxSerializationVersion")
 
     // logging
-    implementation("io.github.microutils:kotlin-logging:2.0.5")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-slf4j:1.4.3")
-    runtimeOnly("ch.qos.logback:logback-classic:1.2.3")
+    implementation("io.github.microutils:kotlin-logging:$kloggingVersion")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-slf4j:$kotlinCoroutinesVersion")
+    runtimeOnly("ch.qos.logback:logback-classic:$logbackVersion")
     testRuntimeOnly("co.elastic.logging:logback-ecs-encoder:0.4.0")
 
     // ktor platform
@@ -52,23 +59,23 @@ dependencies {
     implementation(ktor("locations"))
 
     // kodein DI
-    implementation("org.kodein.di:kodein-di-conf:$kodein_version")
-    implementation("org.kodein.di:kodein-di:$kodein_version")
-    implementation("org.kodein.di:kodein-di-framework-ktor-server-controller-jvm:$kodein_version")
+    implementation("org.kodein.di:kodein-di-conf:$kodeinVersion")
+    implementation("org.kodein.di:kodein-di:$kodeinVersion")
+    implementation("org.kodein.di:kodein-di-framework-ktor-server-controller-jvm:$kodeinVersion")
 
     // test and integration test
 //    implementation("com.github.zensum:ktor-health-check:011a5a8")
-    testImplementation("io.mockk:mockk:1.10.0")
+    testImplementation("io.mockk:mockk:$mockkVersion")
     testImplementation(kotlin("test"))
     testImplementation(kotlin("test-junit5"))
     testImplementation(ktor("server-tests"))
-    testImplementation("com.willowtreeapps.assertk:assertk-jvm:0.23.1")
-    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.4.3")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junit_version")
+    testImplementation("com.willowtreeapps.assertk:assertk-jvm:$assertkVersion")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:$kotlinCoroutinesVersion")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
 
     // acceptance test (some are duplicate to test, but we do have an own classpath here)
-    testAcceptanceImplementation("org.spekframework.spek2:spek-dsl-jvm:$spek_version")
-    testAcceptanceImplementation("com.github.f4b6a3:uuid-creator:3.5.0")
+    testAcceptanceImplementation("org.spekframework.spek2:spek-dsl-jvm:$spekVersion")
+    testAcceptanceImplementation("com.github.f4b6a3:uuid-creator:$uuidCreatorVersion")
     testAcceptanceImplementation(kotlin("test"))
     testAcceptanceImplementation(kotlin("test-junit5"))
     testAcceptanceImplementation(ktor("server-tests"))
@@ -76,9 +83,9 @@ dependencies {
     // define any required OkHttp artifacts without version
     testAcceptanceImplementation("com.squareup.okhttp3:okhttp:4.9.0")
 
-    testAcceptanceImplementation("com.willowtreeapps.assertk:assertk-jvm:0.23.1")
-    testAcceptanceRuntimeOnly("org.spekframework.spek2:spek-runner-junit5:$spek_version")
-    testAcceptanceRuntimeOnly("ch.qos.logback:logback-classic:1.2.3")
+    testAcceptanceImplementation("com.willowtreeapps.assertk:assertk-jvm:$assertkVersion")
+    testAcceptanceRuntimeOnly("org.spekframework.spek2:spek-runner-junit5:$spekVersion")
+    testAcceptanceRuntimeOnly("ch.qos.logback:logback-classic:$logbackVersion")
 
     // spek requires kotlin-reflect, can be omitted if already in the classpath
     testAcceptanceRuntimeOnly(kotlin("reflect"))
