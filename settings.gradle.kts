@@ -3,6 +3,11 @@ import org.gradle.kotlin.dsl.support.listFilesOrdered
 rootProject.name = "kcd"
 
 pluginManagement {
+    val kotlinVersion: String by settings
+    plugins {
+        kotlin("plugin.serialization") version "1.4.32"
+    }
+
     repositories {
         gradlePluginPortal()
         jcenter()
