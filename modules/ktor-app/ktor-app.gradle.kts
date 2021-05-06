@@ -10,6 +10,7 @@ val mockkVersion: String by project
 val assertkVersion: String by project
 val uuidCreatorVersion: String by project
 val kloggingVersion: String by project
+val ktorVersion: String by project
 
 /**
  * Builds the dependency notation for the named Ktor [module] at the given [version].
@@ -48,7 +49,7 @@ dependencies {
     testRuntimeOnly("co.elastic.logging:logback-ecs-encoder:0.4.0")
 
     // ktor platform
-    implementation(platform(ktor("bom:1.5.3")))
+    implementation(platform(ktor("bom:$ktorVersion")))
     implementation(ktor("server-cio"))
     implementation(ktor("server-core"))
     implementation(ktor("server-host-common"))
