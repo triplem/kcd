@@ -55,9 +55,9 @@ dependencies {
     implementation(ktor("server-host-common"))
     implementation(ktor("auth"))
     implementation(ktor("auth-jwt"))
-    implementation("com.auth0:jwks-rsa:0.17.1")
     implementation(ktor("serialization"))
     implementation(ktor("locations"))
+    implementation("com.auth0:jwks-rsa:0.17.1")
 
     // kodein DI
     implementation("org.kodein.di:kodein-di-conf:$kodeinVersion")

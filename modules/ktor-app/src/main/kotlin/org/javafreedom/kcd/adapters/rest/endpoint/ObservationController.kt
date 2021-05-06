@@ -11,6 +11,7 @@ import kotlinx.serialization.Serializable
 import mu.KotlinLogging
 import org.javafreedom.kcd.adapters.rest.mapper.mapToDomain
 import org.javafreedom.kcd.adapters.rest.mapper.mapToRest
+import org.javafreedom.kcd.adapters.rest.model.MappingException
 import org.javafreedom.kcd.adapters.rest.model.RequestObservation
 import org.javafreedom.kcd.application.port.input.LoadObservationUseCase
 import org.javafreedom.kcd.application.port.input.SaveObservationUseCase
@@ -35,7 +36,11 @@ class ObservationController(application: Application) : AbstractDIController(app
             logger.debug { "call.authentication: ${call.authentication}" }
             logger.debug { "principal: $principal" }
 
-            val receivedObservation = call.receive<RequestObservation>()
+            val receivedObservation = try {
+                call.receive<RequestObservation>()
+            } catch (e: Exception) {
+                throw MappingException("given observation cannot be parsed", e)
+            }
 
             logger.debug { "receiveDataPoint: $receivedObservation" }
 

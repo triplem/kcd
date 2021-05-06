@@ -27,7 +27,7 @@ fun Application.statusPagesFeature() {
         }
         exception<MappingException> { e ->
             logger.error(e) { "error" }
-            call.respond(HttpStatusCode.BadRequest)
+            call.respond(HttpStatusCode.BadRequest, constructFailure(isProduction, context, e))
         }
         exception<HttpException> { e ->
             logger.error(e) { e.description }

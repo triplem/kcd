@@ -4,12 +4,15 @@ import assertk.Assert
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isEqualToIgnoringGivenProperties
+import io.ktor.util.*
 import org.javafreedom.kcd.adapters.rest.DomainComponent
 import org.javafreedom.kcd.adapters.rest.DomainElement
 import org.javafreedom.kcd.adapters.rest.DomainObservation
 import org.javafreedom.kcd.adapters.rest.DomainQuantity
 import org.javafreedom.kcd.domain.model.EmbeddedAudit
+import org.javafreedom.kcd.domain.model.Observation
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import java.time.Instant
 import java.time.temporal.ChronoUnit
 import java.util.*
@@ -75,6 +78,20 @@ class MappingTest {
         assertThat(backMapped.audit.user).isEqualTo(observation.audit.user)
         assertThat(backMapped.audit.createdAt).isEqualWithoutMillis(observation.audit.createdAt)
         assertThat(backMapped.audit.modifiedAt).isEqualWithoutMillis(observation.audit.modifiedAt)
+    }
+
+    @Test
+    fun testRestMapping_Error() {
+        val observation = Observation(null, Instant.now(),
+            EmbeddedAudit("user", Instant.now(), Instant.now()),
+            true,
+            null, null)
+
+        val exception = assertThrows<DataConversionException>("element or component should be filled") {
+            observation.mapToRest()
+        }
+
+        assertThat(exception.message).isEqualTo("element or component should be filled")
     }
 
     private fun Assert<Instant>.isEqualWithoutMillis(expected: Instant) = given { actual ->
