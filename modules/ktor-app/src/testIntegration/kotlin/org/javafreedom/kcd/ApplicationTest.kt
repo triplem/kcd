@@ -66,7 +66,25 @@ class ApplicationTest {
             }.apply {
                 assertThat(response.status()).isEqualTo(HttpStatusCode.BadRequest)
                 assertThat(response.content).isNotNull()
-                    .contains("Unexpected JSON token at offset 0: Expected")
+                    .contains("given observation cannot be parsed")
+            }
+        }
+    }
+
+    @Test
+    fun testObservation_NOk_invalidObject() {
+        withTestApplication({
+            module(true, testDI)
+        }) {
+            handleRequest(HttpMethod.Post, "/observation") {
+                addHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
+                addHeader("X-Debug", "True")
+
+                setBody("{\"value\":{\"type\":\"BloodSugar\",\"component\":{\"type\":\"BloodSugar\",\"comment\":\"comment\",\"elements\":[{\"type\":\"BloodSugar\",\"comment\":\"comment\",\"quantity\":{\"unit\":\"mg/dl\",\"amount\":{\"type\":\"Int\",\"value\":99}},\"device\":\"device\",\"extension\":\"extension\"}]}}}")
+            }.apply {
+                assertThat(response.status()).isEqualTo(HttpStatusCode.BadRequest)
+                assertThat(response.content).isNotNull()
+                    .contains("Field 'dateOfObservation' is required for type with serial name 'org.javafreedom.kcd.adapters.rest.model.Observation', but it was missing")
             }
         }
     }
@@ -84,7 +102,6 @@ class ApplicationTest {
         }
     }
 
-
     @Test
     fun testObservation_Ok() {
         withTestApplication({
@@ -92,14 +109,10 @@ class ApplicationTest {
         }) {
             handleRequest(HttpMethod.Post, "/observation") {
                 addHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
-                val date = ZonedDateTime.now(ZoneId.of("Europe/Berlin"))
-                val string = date.format(DateTimeFormatter.ISO_INSTANT)
-                logger.debug("test1: {}", string)
 
                 val json = Json {
                     prettyPrint = true
                     useArrayPolymorphism = false
-//                    serializersModule = restSerializerModule
                 }
 
                 setBody(json.encodeToString(RequestObservation.serializer(), generateBsRestData()))
