@@ -66,7 +66,7 @@ class ApplicationTest {
             }.apply {
                 assertThat(response.status()).isEqualTo(HttpStatusCode.BadRequest)
                 assertThat(response.content).isNotNull()
-                    .contains("Unexpected JSON token at offset 0: Expected")
+                    .contains("given observation cannot be parsed")
             }
         }
     }

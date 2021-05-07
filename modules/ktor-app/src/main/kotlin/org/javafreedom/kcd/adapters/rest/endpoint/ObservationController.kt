@@ -8,6 +8,7 @@ import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.SerializationException
 import mu.KotlinLogging
 import org.javafreedom.kcd.adapters.rest.mapper.mapToDomain
 import org.javafreedom.kcd.adapters.rest.mapper.mapToRest
@@ -38,7 +39,7 @@ class ObservationController(application: Application) : AbstractDIController(app
 
             val receivedObservation = try {
                 call.receive<RequestObservation>()
-            } catch (e: Exception) {
+            } catch (e: SerializationException) {
                 throw MappingException("given observation cannot be parsed", e)
             }
 
